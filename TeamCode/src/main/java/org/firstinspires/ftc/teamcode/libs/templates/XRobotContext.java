@@ -56,13 +56,13 @@ public class XRobotContext {
 
     }
 
-    public ArrayList<XSystem> getInactive_systems() {
+    public ArrayList<XSystem> getInactiveSystems() {
 
         return inactive_systems;
 
     }
 
-    public ArrayList<XSystem> getActive_systems() {
+    public ArrayList<XSystem> getActiveSystems() {
 
         return active_systems;
 

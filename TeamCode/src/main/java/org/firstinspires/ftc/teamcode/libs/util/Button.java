@@ -31,7 +31,7 @@ public class Button {
     /**
      * @param new_state The new value of the button (pressed or not pressed)
      */
-    public void update_state(boolean new_state){
+    public void updateState(boolean new_state){
 
         if(new_state != current_state){
 
@@ -48,7 +48,7 @@ public class Button {
     /**
      * @return true if the button is currently pressed
      */
-    public boolean is_pressed(){
+    public boolean isPressed(){
 
         return current_state;
 
@@ -57,7 +57,7 @@ public class Button {
     /**
      * @return true if the button is not currently pressed
      */
-    public boolean is_released(){
+    public boolean isReleased(){
 
         return !current_state;
 
@@ -66,7 +66,7 @@ public class Button {
     /**
      * @return true if the button was just pressed this update
      */
-    public boolean was_pressed(){
+    public boolean wasPressed(){
 
         return !last_state && current_state;
 
@@ -75,7 +75,7 @@ public class Button {
     /**
      * @return true if the button was just released this update
      */
-    public boolean was_released(){
+    public boolean wasReleased(){
 
         return last_state && !current_state;
 
@@ -84,7 +84,7 @@ public class Button {
     /**
      * @return time since the button was last updated if the button is currently pressed
      */
-    public long get_time_pressed(){
+    public long getTimePressed(){
 
         if(current_state){
 
@@ -99,7 +99,7 @@ public class Button {
     /**
      * @return time since the button was last updated if the button is currently released
      */
-    public long get_time_released(){
+    public long getTimeReleased(){
 
         if(!current_state){
 

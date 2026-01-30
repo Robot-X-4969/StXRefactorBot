@@ -8,9 +8,9 @@ public class XCRServo {
 
     private final XOpMode op;
 
-    private final String servo_name;
+    private final String servoName;
 
-    private CRServoImplEx CR_servo;
+    private CRServoImplEx crServo;
 
     private double power;
 
@@ -18,13 +18,13 @@ public class XCRServo {
 
         this.op = op;
 
-        this.servo_name = servo_name;
+        this.servoName = servo_name;
 
     }
 
     public void init(){
 
-        this.CR_servo = op.hardwareMap.get(CRServoImplEx.class, servo_name);
+        this.crServo = op.hardwareMap.get(CRServoImplEx.class, servoName);
 
         power = 0.0;
 
@@ -34,7 +34,7 @@ public class XCRServo {
 
         this.power = power;
 
-        CR_servo.setPower(power);
+        crServo.setPower(power);
 
     }
 
@@ -42,7 +42,7 @@ public class XCRServo {
 
         this.power = 0.0;
 
-        CR_servo.setPower(0.0);
+        crServo.setPower(0.0);
 
     }
 

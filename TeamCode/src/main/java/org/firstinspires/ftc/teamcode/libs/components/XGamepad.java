@@ -56,9 +56,9 @@ public class XGamepad{
 
     }
 
-    public void update_gamepad() {
+    public void updateGamepad() {
 
-        //update_states the values of all joysticks and triggers
+        //updateStates the values of all joysticks and triggers
         left_stick_x = gamepad.left_stick_x;
         left_stick_y = gamepad.left_stick_y;
         right_stick_x = gamepad.right_stick_x;
@@ -67,90 +67,90 @@ public class XGamepad{
         left_trigger_pressure = gamepad.left_trigger;
         right_trigger_pressure = gamepad.right_trigger;
 
-        //update_states the values of all buttons
-        dpad_up.update_state(gamepad.dpad_up);
-        dpad_down.update_state(gamepad.dpad_down);
-        dpad_left.update_state(gamepad.dpad_left);
-        dpad_right.update_state(gamepad.dpad_right);
+        //updateStates the values of all buttons
+        dpad_up.updateState(gamepad.dpad_up);
+        dpad_down.updateState(gamepad.dpad_down);
+        dpad_left.updateState(gamepad.dpad_left);
+        dpad_right.updateState(gamepad.dpad_right);
 
-        a.update_state(gamepad.a);
-        b.update_state(gamepad.b);
-        x.update_state(gamepad.x);
-        y.update_state(gamepad.y);
+        a.updateState(gamepad.a);
+        b.updateState(gamepad.b);
+        x.updateState(gamepad.x);
+        y.updateState(gamepad.y);
 
-        left_bumper.update_state(gamepad.left_bumper);
-        right_bumper.update_state(gamepad.right_bumper);
+        left_bumper.updateState(gamepad.left_bumper);
+        right_bumper.updateState(gamepad.right_bumper);
 
-        left_stick_button.update_state(gamepad.left_stick_button);
-        right_stick_button.update_state(gamepad.right_stick_button);
+        left_stick_button.updateState(gamepad.left_stick_button);
+        right_stick_button.updateState(gamepad.right_stick_button);
 
-        guide.update_state(gamepad.guide);
-        start.update_state(gamepad.start);
-        back.update_state(gamepad.back);
+        guide.updateState(gamepad.guide);
+        start.updateState(gamepad.start);
+        back.updateState(gamepad.back);
 
-        if (start.is_pressed()) {
+        if (start.isPressed()) {
 
-            a.update_state(false);
+            a.updateState(false);
 
         }
 
     }
 
-    public float getLeft_stick_x() {
+    public float getLeftStickX() {
 
         return left_stick_x;
 
     }
 
-    public float getLeft_stick_y() {
+    public float getLeftStickY() {
 
         return left_stick_y;
 
     }
 
-    public float getRight_stick_x() {
+    public float getRightStickX() {
 
         return right_stick_x;
 
     }
 
-    public float getRight_stick_y() {
+    public float getRightStickY() {
 
         return right_stick_y;
 
     }
 
-    public float getLeft_trigger_pressure() {
+    public float getLeftTriggerPressure() {
 
         return left_trigger_pressure;
 
     }
 
-    public float getRight_trigger_pressure() {
+    public float getRightTriggerPressure() {
 
         return right_trigger_pressure;
 
     }
 
-    public Button getDpad_up() {
+    public Button getDpadUp() {
 
         return dpad_up;
 
     }
 
-    public Button getDpad_down() {
+    public Button getDpadDown() {
 
         return dpad_down;
 
     }
 
-    public Button getDpad_left() {
+    public Button getDpadLeft() {
 
         return dpad_left;
 
     }
 
-    public Button getDpad_right() {
+    public Button getDpadRight() {
 
         return dpad_right;
 

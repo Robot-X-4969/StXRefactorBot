@@ -8,22 +8,23 @@ import java.io.IOException;
 
 public class PIDFTuner {
 
-    private double kP;
-    private double kI;
-    private double kD;
-    private double kF;
+    private FileWriter file_writer;
+    private final double kP;
+    private final double kI;
+    private final double kD;
+    private final double kF;
 
+    private double P;
     private double I;
+    private double D;
+    private double F;
 
     private double last_error;
 
-    private double delta_time;
+    private final double delta_time;
+    private double total_time = 0.0;
 
-    private double total_time;
-
-    private FileWriter file_writer;
-
-    public PIDFTuner(double kP, double kI, double kD, double kF, double delta_time, Context context, String file_name) throws IOException {
+    public PIDFTuner(double kP, double kI, double kD, double kF, double delta_time, Context context, String file_name){
 
         this.kP = kP;
         this.kI = kI;
@@ -31,42 +32,61 @@ public class PIDFTuner {
         this.kF = kF;
 
         this.delta_time = delta_time;
-        total_time = 0.0;
+        this.total_time = 0.0;
 
-        this.I = 0;
+        this.P = 0.0;
+        this.I = 0.0;
+        this.D = 0.0;
 
-        File file = new File(context.getFilesDir(), file_name + ".csv");
+        try {
 
-        file_writer = new FileWriter(file);
+            File file = new File(context.getFilesDir(), file_name + Math.random() * 100 + ".csv");
 
-        file_writer.append("time,targetVel,actualVel,P,I,D,F\n");
+            file_writer = new FileWriter(file);
+
+            file_writer.append("time,targetVel,actualVel,P,I,D,F\n");
+
+        } catch (IOException ignored){
+
+        }
 
     }
 
-    public void graph_PIDF(double current_velocity, double target_velocity) throws IOException {
+    public void graph_PIDF(double current_velocity, double target_velocity){
 
         double error = target_velocity - current_velocity;
 
-        double P = kP * error;
+        P = kP * error;
 
         I += kI * error * delta_time;
 
-        double D = kD * (error - last_error) / delta_time;
+        D = kD * (error - last_error) / delta_time;
 
-        double F = kF * target_velocity;
+        F = kF * target_velocity;
 
         total_time += delta_time;
 
         last_error = error;
 
-        file_writer.append(String.valueOf(total_time)).append(",").append(String.valueOf(target_velocity)).append(",").append(String.valueOf(current_velocity)).append(",").append(String.valueOf(P)).append(",").append(String.valueOf(I)).append(",").append(String.valueOf(D)).append(",").append(String.valueOf(F)).append("\n");
+        try {
+
+            file_writer.append(String.valueOf(total_time)).append(",").append(String.valueOf(target_velocity)).append(",").append(String.valueOf(current_velocity)).append(",").append(String.valueOf(P)).append(",").append(String.valueOf(I)).append(",").append(String.valueOf(D)).append(",").append(String.valueOf(F)).append("\n");
+
+        } catch (IOException ignored){
+
+        }
 
     }
 
-    public void close() throws IOException {
+    public void close(){
 
-        file_writer.flush();
-        file_writer.close();
+        try{
+            file_writer.flush();
+            file_writer.close();
+
+        } catch (IOException ignored){
+
+        }
 
     }
 

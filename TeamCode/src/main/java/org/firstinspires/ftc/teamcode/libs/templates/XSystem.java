@@ -8,17 +8,17 @@ import java.util.List;
 
 public abstract class XSystem {
 
-    private final XOpMode op;
+    protected final XOpMode op;
 
     private final Scheduler scheduler;
 
-    private final XDriverStation driver_station;
+    private final XDriverStation driverStation;
 
     public XSystem(XOpMode op) {
 
         this.op = op;
         this.scheduler = op.getScheduler();
-        this.driver_station = op.getDriver_station();
+        this.driverStation = op.getDriverStation();
 
     }
 
@@ -41,6 +41,8 @@ public abstract class XSystem {
     }
 
     public void loop(){
+
+        control_loop();
 
 
     }

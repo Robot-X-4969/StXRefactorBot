@@ -3,18 +3,18 @@ package org.firstinspires.ftc.teamcode.libs.templates;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.libs.components.XDriverStation;
-import org.firstinspires.ftc.teamcode.libs.components.XMotor;
 import org.firstinspires.ftc.teamcode.libs.util.Scheduler;
 
 public abstract class XOpMode extends OpMode {
 
     private final XRobotContext context = new XRobotContext(this);
 
-    private final XDriverStation driver_station =  new XDriverStation(gamepad1, gamepad2);
+    // Don't construct XDriverStation at field init time (gamepad1/gamepad2 may be null).
+    private XDriverStation driverStation;
 
-    private final Scheduler scheduler = new Scheduler();
+    private Scheduler scheduler = new Scheduler();
 
-    public void initModules(){
+    public void init_modules(){
 
 
     }
@@ -22,15 +22,17 @@ public abstract class XOpMode extends OpMode {
     @Override
     public void init() {
 
-        initModules();
+        driverStation = new XDriverStation(gamepad1, gamepad2);
 
-        for(XSystem system : context.getActive_systems()){
+        init_modules();
+
+        for(XSystem system : context.getActiveSystems()){
 
             system.init();
 
         }
 
-        for(XSystem system : context.getInactive_systems()){
+        for(XSystem system : context.getInactiveSystems()){
 
             system.init();
 
@@ -43,9 +45,9 @@ public abstract class XOpMode extends OpMode {
 
         scheduler.loop();
 
-        driver_station.update();
+        driverStation.update();
 
-        for (XSystem system : context.getActive_systems()) {
+        for (XSystem system : context.getActiveSystems()) {
 
             system.init_loop();
 
@@ -56,26 +58,33 @@ public abstract class XOpMode extends OpMode {
     @Override
     public void start() {
 
-        for(XSystem system : context.getActive_systems()){
+        for(XSystem system : context.getActiveSystems()){
 
             system.start();
 
         }
 
     }
+
     @Override
     public void loop() {
 
         scheduler.loop();
 
-        driver_station.update();
+        if (driverStation != null) driverStation.update();
+
+        for(XSystem system : context.getActiveSystems()){
+
+            system.loop();
+
+        }
 
     }
 
     @Override
     public void stop() {
 
-        for(XSystem system : context.getActive_systems()){
+        for(XSystem system : context.getActiveSystems()){
 
             system.stop();
 
@@ -83,21 +92,15 @@ public abstract class XOpMode extends OpMode {
 
     }
 
-    public void register_module(XSystem module, XRobotContext.ModuleType type){
+    public void registerModule(XSystem module, XRobotContext.ModuleType type){
 
         context.register_module(module, type);
 
     }
 
-    public XRobotContext getContext(){
+    public XDriverStation getDriverStation(){
 
-        return context;
-
-    }
-
-    public XDriverStation getDriver_station(){
-
-        return driver_station;
+        return driverStation;
 
     }
 

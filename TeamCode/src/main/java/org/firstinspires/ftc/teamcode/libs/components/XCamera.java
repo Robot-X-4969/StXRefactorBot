@@ -15,39 +15,39 @@ public class XCamera {
 
     private Limelight3A limelight;
 
-    private final String camera_name;
+    private final String cameraName;
 
     private int index;
 
-    private List<Integer> tag_IDs = new ArrayList<>();
-    private List<Double> tag_X_degrees = new ArrayList<>();
-    private List<Double> tag_Y_degrees = new ArrayList<>();
-    private List<Double> tag_X_positions = new ArrayList<>();
-    private List<Double> tag_Y_positions = new ArrayList<>();
+    private final List<Integer> tagIds = new ArrayList<>();
+    private final List<Double> tagXDegrees = new ArrayList<>();
+    private final List<Double> tagYDegrees = new ArrayList<>();
+    private final List<Double> tagXPositions = new ArrayList<>();
+    private final List<Double> tagYPositions = new ArrayList<>();
 
-    private List<Double> blob_X_degrees = new ArrayList<>();
-    private List<Double> blob_Y_degrees = new ArrayList<>();
-    private List<Double> blob_X_positions = new ArrayList<>();
-    private List<Double> blob_Y_positions = new ArrayList<>();
+    private final List<Double> blobXDegrees = new ArrayList<>();
+    private final List<Double> blobYDegrees = new ArrayList<>();
+    private final List<Double> blobXPositions = new ArrayList<>();
+    private final List<Double> blobYPositions = new ArrayList<>();
 
-    public XCamera(XOpMode op, String camera_name) {
+    public XCamera(XOpMode op, String cameraName) {
 
         this.op = op;
 
-        this.camera_name = camera_name;
+        this.cameraName = cameraName;
 
     }
 
     public void init() {
 
-        limelight = op.hardwareMap.get(Limelight3A.class, camera_name);
+        limelight = op.hardwareMap.get(Limelight3A.class, cameraName);
         limelight.start();
         index = 0;
         limelight.pipelineSwitch(index);
 
     }
 
-    public void set_pipeline(int index) {
+    public void setPipeline(int index) {
 
         this.index = index;
 
@@ -55,35 +55,35 @@ public class XCamera {
 
     }
 
-    public void get_tag_data(){
+    public void getTagData(){
 
         LLResult result = limelight.getLatestResult();
 
         if(result != null && result.isValid()) {
 
-            tag_IDs.clear();
-            tag_X_degrees.clear();
-            tag_Y_degrees.clear();
-            tag_X_positions.clear();
-            tag_Y_positions.clear();
+            tagIds.clear();
+            tagXDegrees.clear();
+            tagYDegrees.clear();
+            tagXPositions.clear();
+            tagYPositions.clear();
 
-            List<LLResultTypes.FiducialResult> fiducial_results = result.getFiducialResults();
+            List<LLResultTypes.FiducialResult> fiducialResults = result.getFiducialResults();
 
-            for(LLResultTypes.FiducialResult fiducial_result : fiducial_results){
+            for(LLResultTypes.FiducialResult fiducialResult : fiducialResults){
 
-                int fiducial_id = fiducial_result.getFiducialId();
+                int fiducialId = fiducialResult.getFiducialId();
 
-                double txdeg = fiducial_result.getTargetXDegrees();
-                double tydeg = fiducial_result.getTargetYDegrees();
+                double txdeg = fiducialResult.getTargetXDegrees();
+                double tydeg = fiducialResult.getTargetYDegrees();
 
-                double tx = fiducial_result.getTargetPoseCameraSpace().getPosition().x;
-                double ty = fiducial_result.getTargetPoseCameraSpace().getPosition().y;
+                double tx = fiducialResult.getTargetPoseCameraSpace().getPosition().x;
+                double ty = fiducialResult.getTargetPoseCameraSpace().getPosition().y;
 
-                tag_IDs.add(fiducial_id);
-                tag_X_degrees.add(txdeg);
-                tag_Y_degrees.add(tydeg);
-                tag_X_positions.add(tx);
-                tag_Y_positions.add(ty);
+                tagIds.add(fiducialId);
+                tagXDegrees.add(txdeg);
+                tagYDegrees.add(tydeg);
+                tagXPositions.add(tx);
+                tagYPositions.add(ty);
 
             }
 
@@ -92,39 +92,37 @@ public class XCamera {
 
     }
 
-    public void get_color_data(){
+    public void getColorData(){
 
         LLResult result = limelight.getLatestResult();
 
         if(result != null && result.isValid()) {
 
-            blob_X_degrees.clear();
-            blob_Y_degrees.clear();
-            blob_X_positions.clear();
-            blob_Y_positions.clear();
+            blobXDegrees.clear();
+            blobYDegrees.clear();
+            blobXPositions.clear();
+            blobYPositions.clear();
 
-            List<LLResultTypes.ColorResult> color_results = result.getColorResults();
+            List<LLResultTypes.ColorResult> colorResults = result.getColorResults();
 
-            for(LLResultTypes.ColorResult color_result : color_results){
+            for(LLResultTypes.ColorResult colorResult : colorResults){
 
-                double txdeg = color_result.getTargetXDegrees();
-                double tydeg = color_result.getTargetYDegrees();
+                double txdeg = colorResult.getTargetXDegrees();
+                double tydeg = colorResult.getTargetYDegrees();
 
-                double tx = color_result.getTargetPoseCameraSpace().getPosition().x;
-                double ty = color_result.getTargetPoseCameraSpace().getPosition().y;
+                double tx = colorResult.getTargetPoseCameraSpace().getPosition().x;
+                double ty = colorResult.getTargetPoseCameraSpace().getPosition().y;
 
-                blob_X_degrees.add(txdeg);
-                blob_Y_degrees.add(tydeg);
-                blob_X_positions.add(tx);
-                blob_Y_positions.add(ty);
+                blobXDegrees.add(txdeg);
+                blobYDegrees.add(tydeg);
+                blobXPositions.add(tx);
+                blobYPositions.add(ty);
 
             }
 
         }
 
     }
-
-
 
 
 

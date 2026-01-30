@@ -2,57 +2,57 @@ package org.firstinspires.ftc.teamcode.libs.util;
 
 public class Stopwatch {
 
-    private long start_time;
+    private long startTime;
 
-    private long target_time;
+    private long targetTime;
 
     public Stopwatch(long millis){
 
-        start_timer(millis);
+        startTimer(millis);
 
     }
 
     public void reset(){
 
-        start_time = System.nanoTime();
+        startTime = System.nanoTime();
 
     }
 
     public void clear(){
 
-        target_time = 0;
+        targetTime = 0;
 
     }
 
-    public long elapsed_nano_time(){
+    public long elapsedNanoTime(){
 
-        return System.nanoTime() - start_time;
-
-    }
-
-    public long remaining_nano_time(){
-
-        return Math.max(0, target_time - elapsed_nano_time());
+        return System.nanoTime() - startTime;
 
     }
 
-    public void start_timer(long millis){
+    public long remainingNanoTime(){
+
+        return Math.max(0, targetTime - elapsedNanoTime());
+
+    }
+
+    public void startTimer(long millis){
 
         reset();
 
-        target_time = millis * 1_000_000L;
+        targetTime = millis * 1_000_000L;
 
     }
 
-    public boolean is_timer_done(){
+    public boolean isTimerDone(){
 
-        return is_timer_running() && remaining_nano_time() == 0;
+        return isTimerRunning() && remainingNanoTime() == 0;
 
     }
 
-    public boolean is_timer_running(){
+    public boolean isTimerRunning(){
 
-        return target_time != 0 && remaining_nano_time() > 0;
+        return targetTime != 0 && remainingNanoTime() > 0;
 
     }
 

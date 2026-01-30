@@ -1,4 +1,6 @@
 package org.firstinspires.ftc.teamcode.libs.templates;
 
-public class XAuton {
+public abstract class XAuton extends XOpMode{
+
+
 }
