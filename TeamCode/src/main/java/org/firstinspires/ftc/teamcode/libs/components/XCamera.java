@@ -36,6 +36,8 @@ public class XCamera {
 
         this.cameraName = cameraName;
 
+        index = 0;
+
     }
 
     public void init() {
@@ -44,6 +46,13 @@ public class XCamera {
         limelight.start();
         index = 0;
         limelight.pipelineSwitch(index);
+
+    }
+
+    public void loop() {
+
+        getTagData();
+        getColorData();
 
     }
 
@@ -124,7 +133,28 @@ public class XCamera {
 
     }
 
+    public boolean seesAprilTag(int ID){
 
+        return tagIds.contains(ID);
 
+    }
+
+    public int getAprilTagIndex(int ID){
+
+        return tagIds.indexOf(ID);
+
+    }
+
+    public double getTx(int index){
+
+        return tagXDegrees.get(index);
+
+    }
+
+    public double getTy(int index) {
+
+        return tagYDegrees.get(index);
+
+    }
 
 }

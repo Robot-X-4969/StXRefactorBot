@@ -23,6 +23,7 @@ public class MecanumOrientationDrive extends XSystem {
     private double r;
     private double offset;
     private boolean orientationMode;
+    private boolean allowedRotation;
     private boolean autonomousMode;
 
 
@@ -102,7 +103,8 @@ public class MecanumOrientationDrive extends XSystem {
 
         x = op.getDriverStation().getGamepad1().getLeftStickX();
         y = op.getDriverStation().getGamepad1().getLeftStickY();
-        r = op.getDriverStation().getGamepad1().getRightStickX();
+        r = allowedRotation ? op.getDriverStation().getGamepad1().getRightStickX() : 0;
+
 
     }
 
@@ -148,6 +150,18 @@ public class MecanumOrientationDrive extends XSystem {
         frontRight.setPower((yPrime + xPrime + r) * scaling * power);
         backLeft.setPower((yPrime - xPrime + r) * scaling * power);
         backRight.setPower((yPrime + xPrime - r) * scaling * power);
+
+    }
+
+    public void setAllowedRotation(boolean allowed) {
+
+        this.allowedRotation = allowed;
+
+    }
+
+    public void setR(double r) {
+
+        this.r = r;
 
     }
 
