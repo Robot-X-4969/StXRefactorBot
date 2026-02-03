@@ -1,4 +1,5 @@
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+package org.firstinspires.ftc.teamcode.source.systems;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.libs.components.XMotor;
@@ -11,15 +12,23 @@ public class Flywheel extends XSystem {
     XMotor motor1, motor2;
     XServo servo1, servo2;
 
+    private int index;
+
     private final double[] MOTOR_SPEEDS = new double[]{
-            0.0, 750.0, 825.0, 1025.0, 2000.0
+            0.0,
+            750.0,
+            825.0,
+            1025.0,
+            2000.0
     };
 
     private final double[] SERVO_POSITIONS = new double[]{
-            0.0, 0.20, 0.125, 0.16, 0.16
+            0.0,
+            0.20,
+            0.125,
+            0.16,
+            0.16
     };
-
-    private int index = 0;
 
     public Flywheel(XOpMode op) {
 
@@ -39,64 +48,66 @@ public class Flywheel extends XSystem {
 
         motor2.setBrakes(false);
         motor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motor2.setReverse(false);
+        motor2.setReverse(true);
 
 
-        servo1 = new XServo(op, "hood1", SERVO_POSITIONS);
+        servo1 = new XServo(op, "hood1");
         servo1.init();
 
-        servo2 = new XServo(op, "hood2", SERVO_POSITIONS);
+        servo2 = new XServo(op, "hood2");
         servo2.init();
-
-
+        servo2.setReverse(true);
 
         increment(0);
+
     }
+
     @Override
     public void loop(){
+
         super.loop();
-        opMode.telemetry.addData("CurrentRPM",motor1.getCurrentRPM(motor1.getCurrentVelocity()));
-        opMode.telemetry.addData("TargetRPM", MOTOR_SPEEDS[index]);
-        opMode.telemetry.update();
 
         setPIDFCoefficients();
 
-        //motor1.pidfTuner.graph_PIDF(motor1.getCurrentVelocity()/2800, motor1.calculateVelocity(MOTOR_SPEEDS[index])/2800);
     }
 
     @Override
     public void control_loop(){
-        super.control_loop();
+
 
         if (driverStation.getGamepad1().getDpadLeft().wasPressed()) {
 
             increment(-1);
 
-        } else if (xDS.xGamepad1.dpad_right.wasPressed()) {
+        } else if (driverStation.getGamepad1().getDpadLeft().wasPressed()) {
+
             increment(1);
+
         }
+
     }
 
     public void increment(int increment) {
+
         index = Math.max(0, Math.min(index + increment, MOTOR_SPEEDS.length - 1));
 
-        motor1.setMotorRPM(MOTOR_SPEEDS[index]);
-        motor2.setMotorRPM(MOTOR_SPEEDS[index]);
+        motor1.setRpm(MOTOR_SPEEDS[index]);
+        motor2.setRpm(MOTOR_SPEEDS[index]);
 
         servo1.setPosition(SERVO_POSITIONS[index]);
-        servo2.setPosition(0.99 - SERVO_POSITIONS[index]);
+        servo2.setPosition(SERVO_POSITIONS[index]);
     }
 
     public void setPIDFCoefficients() {
-        double F = 32767 / motor1.getMaxVelocity() * (12.00 / motor1.voltageSensor.getVoltage());
+
+        double F = 32767 / motor1.getMaxTicksPerSecond() * (motor1.getNominalVoltage() / motor1.getVoltage());
         double P = 0.2 * F;
         double I = 0.0 * P;
         double D = 0.0;
 
-        motor1.setPIDFValues(P, I, D, F);
-        motor2.setPIDFValues(P, I, D, F);
+        motor1.setPidfCoefficients(P, I, D, F);
+        motor2.setPidfCoefficients(P, I, D, F);
+
     }
-
-
 
 }

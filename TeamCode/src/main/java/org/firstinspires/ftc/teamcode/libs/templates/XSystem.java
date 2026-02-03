@@ -59,4 +59,10 @@ public abstract class XSystem {
 
     }
 
+    public void displayTelemetry(){
+
+
+
+    }
+
 }

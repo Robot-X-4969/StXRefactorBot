@@ -151,12 +151,6 @@ public class XMotor {
 
     }
 
-    public DcMotorEx getMotor(){
-
-        return motor;
-
-    }
-
     public double getMaxTicksPerSecond(){
 
         return maxTicksPerSecond;

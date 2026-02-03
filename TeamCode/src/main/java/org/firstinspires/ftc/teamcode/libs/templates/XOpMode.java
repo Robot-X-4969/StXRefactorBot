@@ -92,6 +92,16 @@ public abstract class XOpMode extends OpMode {
 
     }
 
+    public void displayTelemetry(){
+
+        for(XSystem system : context.getActiveSystems()){
+
+            system.displayTelemetry();
+
+        }
+
+    }
+
     public void registerModule(XSystem module, XRobotContext.ModuleType type){
 
         context.register_module(module, type);

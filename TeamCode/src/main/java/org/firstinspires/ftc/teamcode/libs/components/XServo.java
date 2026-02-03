@@ -8,9 +8,9 @@ public class XServo {
 
     private final XOpMode op;
     private final String servoName;
-    private final double[] positions;
-
     private ServoImplEx servo;
+    private double[] positions;
+    private double currentPosition;
     private int index;
 
     public XServo(XOpMode op, String servoName, double[] positions) {
@@ -21,13 +21,21 @@ public class XServo {
 
     }
 
+    public XServo(XOpMode op, String servoName){
+
+        this.op = op;
+
+        this.servoName = servoName;
+
+    }
+
     public void init() {
 
         servo = op.hardwareMap.get(ServoImplEx.class, servoName);
 
         index = 0;
 
-        servo.setPosition(positions[index]);
+        setIndex(index);
 
     }
 
@@ -37,10 +45,27 @@ public class XServo {
 
         servo.setPosition(positions[index]);
 
+        currentPosition = positions[index];
+
     }
 
-    public void increment(double increment){
+    public double getCurrentPosition(){
 
+        return currentPosition;
+
+    }
+
+    public void setPosition(double position){
+
+        servo.setPosition(position);
+
+        currentPosition = position;
+
+    }
+
+    public void setReverse(boolean reverse){
+
+        servo.setDirection(reverse ? ServoImplEx.Direction.REVERSE : ServoImplEx.Direction.FORWARD);
 
     }
 
