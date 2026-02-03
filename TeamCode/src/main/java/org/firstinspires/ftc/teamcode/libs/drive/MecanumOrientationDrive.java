@@ -84,13 +84,13 @@ public class MecanumOrientationDrive extends XSystem {
 
         updateSticks();
 
-        if(op.getDriverStation().getGamepad1().getY().isPressed()){
+        if(op.getDriverStation().getGamepad1().getY().wasPressed()){
 
             orientationMode = !orientationMode;
 
         }
 
-        if(op.getDriverStation().getGamepad1().getX().isPressed()){
+        if(op.getDriverStation().getGamepad1().getX().wasPressed()){
 
             refreshOrientation();
 

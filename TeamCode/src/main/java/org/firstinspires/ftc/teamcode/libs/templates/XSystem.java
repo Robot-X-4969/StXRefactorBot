@@ -10,9 +10,9 @@ public abstract class XSystem {
 
     protected final XOpMode op;
 
-    private final Scheduler scheduler;
+    protected final Scheduler scheduler;
 
-    private final XDriverStation driverStation;
+    protected final XDriverStation driverStation;
 
     public XSystem(XOpMode op) {
 

@@ -39,4 +39,9 @@ public class XServo {
 
     }
 
+    public void increment(double increment){
+
+
+    }
+
 }

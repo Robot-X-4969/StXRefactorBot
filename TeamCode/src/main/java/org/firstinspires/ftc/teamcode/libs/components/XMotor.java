@@ -19,8 +19,7 @@ public class XMotor {
     private VoltageSensor voltageSensor;
 
     private boolean useEncoder;
-
-    private int targetPosition;
+    private int position;
 
     public XMotor(XOpMode op, String motorName, double ticksPerRev, double maxTicksPerSecond, double nominalVoltage) {
 
@@ -33,6 +32,8 @@ public class XMotor {
         this.maxTicksPerSecond = maxTicksPerSecond;
 
         this.nominalVoltage = nominalVoltage;
+
+        this.position = 0;
 
     }
 
@@ -52,8 +53,6 @@ public class XMotor {
 
         this.motor = op.hardwareMap.get(DcMotorEx.class, motorName);
         this.voltageSensor = op.hardwareMap.voltageSensor.iterator().next();
-
-        targetPosition = 0;
 
         useEncoder = false;
 
@@ -107,7 +106,7 @@ public class XMotor {
 
     public void setFixedRotation(double power, int position){
 
-        this.targetPosition = position;
+        this.position = position;
 
         motor.setTargetPosition(position);
 
@@ -176,9 +175,15 @@ public class XMotor {
 
     }
 
-    public double getTargetPosition(){
+    public int getPosition(){
 
-        return targetPosition;
+        return position;
+
+    }
+
+    public boolean checkBusy(){
+
+        return motor.isBusy();
 
     }
 
