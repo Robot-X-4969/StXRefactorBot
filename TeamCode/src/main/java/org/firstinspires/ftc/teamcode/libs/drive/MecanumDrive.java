@@ -65,27 +65,13 @@ public class MecanumDrive extends XSystem {
 
     public void updateSticks() {
 
-        if(!autonomous){
+        if (!autonomous) {
 
             x = op.getDriverStation().getGamepad1().getLeftStickX();
             y = op.getDriverStation().getGamepad1().getLeftStickY();
             r = op.getDriverStation().getGamepad1().getRightStickX();
 
         }
-
-    }
-
-    public void setSlowMode(boolean enabled) {
-
-        slowMode = enabled;
-        superSlowMode = false;
-
-    }
-
-    public void setSuperSlowMode(boolean enabled) {
-
-        superSlowMode = enabled;
-        slowMode = false;
 
     }
 

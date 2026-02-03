@@ -76,6 +76,14 @@ public class XPinpoint {
 
     }
 
+    public void getTelemetryData() {
+
+        op.telemetry.addData("X coordinate: ", getX());
+        op.telemetry.addData("Y coordinate: ", getY());
+        op.telemetry.addData("direction: ", getHeading());
+
+    }
+
     public void reset() {
 
         device.resetPosAndIMU();
