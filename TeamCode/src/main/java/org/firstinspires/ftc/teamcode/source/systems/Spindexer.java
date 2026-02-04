@@ -19,6 +19,8 @@ public class Spindexer extends XSystem {
     private final double[] gate1Positions = {1 - START_ANGLE, 1 - START_ANGLE + (-2.0 / 15.0)};
     private final double[] gate2Positions = {START_ANGLE, START_ANGLE + (2.0 / 15.0)};
 
+    private boolean isFiring;
+
 
     public Spindexer(XOpMode op) {
 
@@ -36,7 +38,7 @@ public class Spindexer extends XSystem {
         gate2 = new XServo(op, "gate2", gate2Positions);
         gate2.init();
 
-        super.init();
+        isFiring = false;
 
     }
 
@@ -74,6 +76,13 @@ public class Spindexer extends XSystem {
             });
 
         }
+
+    }
+
+    public void burstFirst(){
+
+
+
 
     }
 

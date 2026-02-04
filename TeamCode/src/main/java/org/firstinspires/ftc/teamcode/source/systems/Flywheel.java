@@ -56,7 +56,6 @@ public class Flywheel extends XSystem {
 
         servo2 = new XServo(op, "hood2");
         servo2.init();
-        servo2.setReverse(true);
 
         increment(0);
 
@@ -95,7 +94,7 @@ public class Flywheel extends XSystem {
         motor2.setRpm(MOTOR_SPEEDS[index]);
 
         servo1.setPosition(SERVO_POSITIONS[index]);
-        servo2.setPosition(SERVO_POSITIONS[index]);
+        servo2.setPosition(0.99 - SERVO_POSITIONS[index]);
     }
 
     public void setPIDFCoefficients() {

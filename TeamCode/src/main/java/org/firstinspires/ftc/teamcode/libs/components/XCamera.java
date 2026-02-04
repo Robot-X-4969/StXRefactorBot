@@ -9,6 +9,12 @@ import org.firstinspires.ftc.teamcode.libs.templates.XOpMode;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * XCamera component class that implements Limelight3A functionality, such as AprilTag and color blob detection.
+ * <p>
+ * Created by Gavin Farrell on 2/4/26.
+ */
+
 public class XCamera {
 
     private final XOpMode op;
@@ -16,7 +22,6 @@ public class XCamera {
     private Limelight3A limelight;
 
     private final String cameraName;
-
     private int index;
 
     private final List<Integer> tagIds = new ArrayList<>();
@@ -30,6 +35,12 @@ public class XCamera {
     private final List<Double> blobXPositions = new ArrayList<>();
     private final List<Double> blobYPositions = new ArrayList<>();
 
+    /**
+     * Creates a new XCamera component.
+     *
+     * @param op The XOpMode the XCamera component is created in.
+     * @param cameraName Unique name of the camera in the hardware map.
+     */
     public XCamera(XOpMode op, String cameraName) {
 
         this.op = op;
@@ -40,6 +51,11 @@ public class XCamera {
 
     }
 
+    /**
+     * Initializes the XCamera component and the Limelight3A camera.
+     * <p>
+     * Sets the initial pipeline and starts the camera.
+     */
     public void init() {
 
         limelight = op.hardwareMap.get(Limelight3A.class, cameraName);
@@ -49,13 +65,24 @@ public class XCamera {
 
     }
 
+    /**
+     * Main loop method for the XCamera component.
+     * <p>
+     * Retrieves the latest results from the Limelight3A camera and processes AprilTag and color blob data.
+     */
     public void loop() {
 
-        getTagData();
-        getColorData();
+        LLResult result = limelight.getLatestResult();
+        getTagData(result);
+        getColorData(result);
 
     }
 
+    /**
+     * Sets the active pipeline on the Limelight3A camera.
+     *
+     * @param index The index of the pipeline to set.
+     */
     public void setPipeline(int index) {
 
         this.index = index;
@@ -64,9 +91,12 @@ public class XCamera {
 
     }
 
-    public void getTagData(){
-
-        LLResult result = limelight.getLatestResult();
+    /**
+     * Retrieves AprilTag data from the latest LLResult.
+     *
+     * @param result The latest LLResult from the Limelight3A camera.
+     */
+    public void getTagData(LLResult result){
 
         if(result != null && result.isValid()) {
 
@@ -101,9 +131,12 @@ public class XCamera {
 
     }
 
-    public void getColorData(){
-
-        LLResult result = limelight.getLatestResult();
+    /**
+     * Retrieves color blob data from the latest LLResult.
+     *
+     * @param result The latest LLResult from the Limelight3A camera.
+     */
+    public void getColorData(LLResult result){
 
         if(result != null && result.isValid()) {
 
@@ -133,18 +166,33 @@ public class XCamera {
 
     }
 
+    /**
+     * Checks if an AprilTag with the specified ID is currently detected by the camera.
+     *
+     * @param ID The ID of the AprilTag to check for.
+     *
+     * @return True if the AprilTag with the specified ID is detected, false otherwise.
+     */
     public boolean seesAprilTag(int ID){
 
         return tagIds.contains(ID);
 
     }
 
+    /**
+     * Retrieves the index of the specified AprilTag ID in the detected tags list.
+     *
+     * @param ID The ID of the AprilTag to find.
+     *
+     * @return The index of the AprilTag with the specified ID, or -1 if not found.
+     */
     public int getAprilTagIndex(int ID){
 
         return tagIds.indexOf(ID);
 
     }
 
+    //Getter methods for tag data
     public double getTx(int index){
 
         return tagXDegrees.get(index);

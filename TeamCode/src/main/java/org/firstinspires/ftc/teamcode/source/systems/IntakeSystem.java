@@ -29,6 +29,7 @@ public class IntakeSystem extends XSystem {
     public void loop(){
 
         super.loop();
+
         crServo1.rotate(1.0);
         crServo2.rotate(-1.0);
 
