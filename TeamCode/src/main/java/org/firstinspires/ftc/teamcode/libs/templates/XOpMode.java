@@ -9,10 +9,9 @@ public abstract class XOpMode extends OpMode {
 
     private final XRobotContext context = new XRobotContext(this);
 
-    // Don't construct XDriverStation at field init time (gamepad1/gamepad2 may be null).
     private XDriverStation driverStation;
 
-    private Scheduler scheduler = new Scheduler();
+    private Scheduler scheduler;
 
     public void init_modules(){
 
@@ -23,18 +22,19 @@ public abstract class XOpMode extends OpMode {
     public void init() {
 
         driverStation = new XDriverStation(gamepad1, gamepad2);
+        scheduler = new Scheduler();
 
         init_modules();
 
         for(XSystem system : context.getActiveSystems()){
 
-            system.init();
+            system.init(scheduler, driverStation);
 
         }
 
         for(XSystem system : context.getInactiveSystems()){
 
-            system.init();
+            system.init(scheduler, driverStation);
 
         }
 
@@ -46,6 +46,18 @@ public abstract class XOpMode extends OpMode {
         scheduler.loop();
 
         driverStation.update();
+
+        telemetry.update();
+
+        if(driverStation.getGamepad1() != null) {
+
+            telemetry.addData("GP1:", "Connected");
+
+        } else {
+
+            telemetry.addData("GP1:", "Disconnected");
+
+        }
 
         for (XSystem system : context.getActiveSystems()) {
 
@@ -79,6 +91,8 @@ public abstract class XOpMode extends OpMode {
 
         }
 
+        displayTelemetry();
+
     }
 
     @Override
@@ -94,11 +108,8 @@ public abstract class XOpMode extends OpMode {
 
     public void displayTelemetry(){
 
-        for(XSystem system : context.getActiveSystems()){
+        telemetry.update();
 
-            system.displayTelemetry();
-
-        }
 
     }
 
@@ -117,6 +128,12 @@ public abstract class XOpMode extends OpMode {
     public Scheduler getScheduler() {
 
         return scheduler;
+
+    }
+
+    public XDriverStation getXDriverStation() {
+
+        return driverStation;
 
     }
 

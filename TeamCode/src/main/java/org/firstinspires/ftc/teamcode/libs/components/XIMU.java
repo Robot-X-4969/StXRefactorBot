@@ -40,6 +40,12 @@ public class XIMU {
 
     }
 
+    public double getYaw(){
+
+        return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
+
+    }
+
 
 
 

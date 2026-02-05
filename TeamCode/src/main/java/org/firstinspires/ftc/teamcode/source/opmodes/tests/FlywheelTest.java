@@ -6,6 +6,7 @@ import org.firstinspires.ftc.teamcode.libs.drive.MecanumOrientationDrive;
 import org.firstinspires.ftc.teamcode.libs.templates.XOpMode;
 
 import org.firstinspires.ftc.teamcode.libs.templates.XRobotContext;
+import org.firstinspires.ftc.teamcode.source.systems.Flywheel;
 
 @TeleOp (name = "Driver Test", group = "Tests")
 public class FlywheelTest extends XOpMode {
@@ -13,7 +14,7 @@ public class FlywheelTest extends XOpMode {
     @Override
     public void init_modules() {
 
-        registerModule(new Flywheel(), XRobotContext.ModuleType.ACTIVE);
+        registerModule(new Flywheel(this), XRobotContext.ModuleType.ACTIVE);
 
     }
 

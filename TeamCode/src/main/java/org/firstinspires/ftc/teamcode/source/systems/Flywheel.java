@@ -2,10 +2,12 @@ package org.firstinspires.ftc.teamcode.source.systems;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.teamcode.libs.components.XDriverStation;
 import org.firstinspires.ftc.teamcode.libs.components.XMotor;
 import org.firstinspires.ftc.teamcode.libs.components.XServo;
 import org.firstinspires.ftc.teamcode.libs.templates.XOpMode;
 import org.firstinspires.ftc.teamcode.libs.templates.XSystem;
+import org.firstinspires.ftc.teamcode.libs.util.Scheduler;
 
 public class Flywheel extends XSystem {
 
@@ -37,7 +39,9 @@ public class Flywheel extends XSystem {
     }
 
     @Override
-    public void init(){
+    public void init(Scheduler scheduler, XDriverStation driverStation){
+
+        super.init(scheduler, driverStation);
 
         motor1 = new XMotor(op, "flywheel1");
         motor2 = new XMotor(op, "flywheel2");
@@ -51,10 +55,10 @@ public class Flywheel extends XSystem {
         motor2.setReverse(true);
 
 
-        servo1 = new XServo(op, "hood1");
+        servo1 = new XServo(op, "hood1", 0.0);
         servo1.init();
 
-        servo2 = new XServo(op, "hood2");
+        servo2 = new XServo(op, "hood2", 0.0);
         servo2.init();
 
         increment(0);
@@ -83,6 +87,16 @@ public class Flywheel extends XSystem {
             increment(1);
 
         }
+
+    }
+
+    @Override
+    public void displayTelemetry(){
+
+        op.telemetry.addData("Flywheel Speed Index: ", index);
+        op.telemetry.addData("Flywheel Target RPM: ", MOTOR_SPEEDS[index]);
+        op.telemetry.addData("Flywheel 1 Current RPM: ", motor1.getCurrentRPM());
+        op.telemetry.addData("Flywheel 2 Current RPM: ", motor2.getCurrentRPM());
 
     }
 

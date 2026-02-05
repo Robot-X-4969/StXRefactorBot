@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode.source.systems;
 
 import org.firstinspires.ftc.teamcode.libs.components.XCamera;
+import org.firstinspires.ftc.teamcode.libs.components.XDriverStation;
 import org.firstinspires.ftc.teamcode.libs.drive.MecanumOrientationDrive;
 import org.firstinspires.ftc.teamcode.libs.templates.XOpMode;
 import org.firstinspires.ftc.teamcode.libs.templates.XSystem;
+import org.firstinspires.ftc.teamcode.libs.util.Scheduler;
 
 public class CameraSystem extends XSystem {
 
@@ -22,11 +24,15 @@ public class CameraSystem extends XSystem {
     }
 
     @Override
-    public void init(){
+    public void init(Scheduler scheduler, XDriverStation driverStation){
+
+        super.init(scheduler, driverStation);
 
         this.camera = new XCamera(op, "limelight");
 
         camera.init();
+
+        this.camera.setPipeline(2);
 
         isAligning = false;
 
@@ -58,13 +64,33 @@ public class CameraSystem extends XSystem {
     @Override
     public void control_loop()  {
 
-        if(camera.seesAprilTag(20) && driverStation.getGamepad1().getA().wasPressed() && !isAligning){
+        if(camera.seesAprilTag(20) && op.getDriverStation().getGamepad1().getA().wasPressed() && !isAligning){
 
             isAligning = true;
 
             drive.setAllowedRotation(false);
 
         }
+
+    }
+
+    @Override
+    public void displayTelemetry(){
+
+        op.telemetry.addData("Camera Sees Tag 20: ", camera.seesAprilTag(20));
+
+        /*
+        if(!camera.seesAprilTag(20)){
+
+            op.telemetry.addData("Tag 20 X Angle: ", camera.getTx(camera.getAprilTagIndex(20)));
+
+        }
+
+         */
+
+        op.telemetry.addData("Tag 20 X Angle: ", "N/A");
+
+        op.telemetry.addData("Is Aligning: ", isAligning);
 
 
     }
@@ -77,17 +103,17 @@ public class CameraSystem extends XSystem {
 
             double power = Math.max(xAngle * kP, 0.1);
 
-            drive.setR(power);
+            drive.setAutoR(power);
 
         } else if(xAngle < -1.0){
 
             double power = Math.min(xAngle * kP, -0.1);
 
-            drive.setR(power);
+            drive.setAutoR(power);
 
         } else {
 
-            drive.setR(0);
+            drive.setAutoR(0);
 
             drive.setAllowedRotation(true);
 

@@ -10,20 +10,20 @@ public abstract class XSystem {
 
     protected final XOpMode op;
 
-    protected final Scheduler scheduler;
+    protected Scheduler scheduler;
 
-    protected final XDriverStation driverStation;
+    protected XDriverStation driverStation;
 
     public XSystem(XOpMode op) {
 
         this.op = op;
-        this.scheduler = op.getScheduler();
-        this.driverStation = op.getDriverStation();
 
     }
 
-    public void init(){
+    public void init(Scheduler scheduler, XDriverStation driverStation){
 
+        this.scheduler = scheduler;
+        this.driverStation = driverStation;
 
     }
 

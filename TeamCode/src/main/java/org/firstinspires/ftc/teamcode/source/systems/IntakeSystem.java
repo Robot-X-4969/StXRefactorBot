@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode.source.systems;
 
+import org.firstinspires.ftc.teamcode.libs.components.XDriverStation;
 import org.firstinspires.ftc.teamcode.libs.templates.XOpMode;
 import org.firstinspires.ftc.teamcode.libs.templates.XSystem;
 import org.firstinspires.ftc.teamcode.libs.components.XCRServo;
+import org.firstinspires.ftc.teamcode.libs.util.Scheduler;
 
 public class IntakeSystem extends XSystem {
 
@@ -16,7 +18,9 @@ public class IntakeSystem extends XSystem {
     }
 
     @Override
-    public void init() {
+    public void init(Scheduler scheduler, XDriverStation driverStation) {
+
+        super.init(scheduler, driverStation);
 
         crServo1 = new XCRServo(op, "intakeServo1");
         crServo2 = new XCRServo(op, "intakeServo2");

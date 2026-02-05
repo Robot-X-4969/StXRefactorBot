@@ -181,4 +181,12 @@ public class XMotor {
 
     }
 
+    public double getCurrentRPM(){
+
+        return (motor.getVelocity() * 60) / ticksPerRev;
+
+
+
+    }
+
 }

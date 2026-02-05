@@ -13,13 +13,24 @@ import javax.crypto.ExemptionMechanism;
 @TeleOp (name = "Alignment Test", group = "Tests")
 public class AlignmentTest extends XOpMode {
 
+    MecanumOrientationDrive drive = new MecanumOrientationDrive(this, false);
+    CameraSystem camera = new CameraSystem(this, drive);
+
     @Override
     public void init_modules() {
 
-        MecanumOrientationDrive drive = new MecanumOrientationDrive(this, false);
-
         registerModule(drive, XRobotContext.ModuleType.ACTIVE);
-        registerModule(new CameraSystem(this, drive), XRobotContext.ModuleType.ACTIVE);
+        registerModule(camera, XRobotContext.ModuleType.ACTIVE);
+
+    }
+
+    @Override
+    public void displayTelemetry() {
+
+        super.displayTelemetry();
+
+        drive.displayTelemetry();
+        camera.displayTelemetry();
 
     }
 

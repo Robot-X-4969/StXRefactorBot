@@ -21,6 +21,7 @@ public class MecanumOrientationDrive extends XSystem {
     private double x;
     private double y;
     private double r;
+    private double autoR;
     private double offset;
     private boolean orientationMode;
     private boolean allowedRotation;
@@ -37,8 +38,6 @@ public class MecanumOrientationDrive extends XSystem {
 
     @Override
     public void init() {
-
-        refreshOrientation();
 
         frontLeft = new XMotor(op, "frontLeft");
         frontRight = new XMotor(op, "frontRight");
@@ -62,6 +61,13 @@ public class MecanumOrientationDrive extends XSystem {
         orientationMode = true;
 
         offset = 0;
+        globalAngle = 0;
+
+        refreshOrientation();
+
+        autoR = 0;
+
+        allowedRotation = true;
 
     }
 
@@ -76,7 +82,17 @@ public class MecanumOrientationDrive extends XSystem {
 
         final double joystickAngle = Math.atan2(-y, x);
 
-        powerMotors(0.75, joystickAngle, robotAngle);
+        powerMotors(1.0, joystickAngle, robotAngle);
+
+    }
+
+    @Override
+    public void displayTelemetry() {
+
+        op.telemetry.addData("Orientation Mode", orientationMode);
+        op.telemetry.addData("Global Angle", globalAngle);
+        op.telemetry.addData("Offset", offset);
+        op.telemetry.addData("Robot Angle", globalAngle - offset);
 
     }
 
@@ -103,8 +119,7 @@ public class MecanumOrientationDrive extends XSystem {
 
         x = op.getDriverStation().getGamepad1().getLeftStickX();
         y = op.getDriverStation().getGamepad1().getLeftStickY();
-        r = allowedRotation ? op.getDriverStation().getGamepad1().getRightStickX() : 0;
-
+        r = allowedRotation ? op.getDriverStation().getGamepad1().getRightStickX() : this.autoR;
 
     }
 
@@ -138,7 +153,7 @@ public class MecanumOrientationDrive extends XSystem {
 
     public void powerMotors(double power, double joystickAngle, double robotAngle) {
 
-        final double scaling = Math.pow(Math.max(Math.abs(x), Math.max(Math.abs(y), Math.abs(r))), 2) / ((x * x) + (y * y) + (r * r));
+        double scaling = Math.pow(Math.max(Math.abs(x), Math.max(Math.abs(y), Math.abs(r))), 2) / ((x * x) + (y * y) + (r * r));
 
         final double magnitude = Math.sqrt((x * x) + (y * y));
 
@@ -148,8 +163,8 @@ public class MecanumOrientationDrive extends XSystem {
 
         frontLeft.setPower((yPrime - xPrime - r) * scaling * power);
         frontRight.setPower((yPrime + xPrime + r) * scaling * power);
-        backLeft.setPower((yPrime - xPrime + r) * scaling * power);
-        backRight.setPower((yPrime + xPrime - r) * scaling * power);
+        backLeft.setPower((yPrime + xPrime - r) * scaling * power);
+        backRight.setPower((yPrime - xPrime + r) * scaling * power);
 
     }
 
@@ -159,9 +174,9 @@ public class MecanumOrientationDrive extends XSystem {
 
     }
 
-    public void setR(double r) {
+    public void setAutoR(double r) {
 
-        this.r = r;
+        this.autoR = r;
 
     }
 
