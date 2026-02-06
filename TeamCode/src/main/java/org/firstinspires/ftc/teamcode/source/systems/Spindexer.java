@@ -27,6 +27,7 @@ public class Spindexer extends XSystem {
     public Spindexer(XOpMode op) {
 
         super(op);
+
     }
 
     @Override
@@ -67,26 +68,83 @@ public class Spindexer extends XSystem {
 
         }
 
-        if (driverStation.getGamepad1().getB().wasPressed()) {
+        if (driverStation.getGamepad1().getB().wasPressed() && !isFiring) {
 
-            gate1.setPosition(1 - START_ANGLE + (-2.0 / 15.0));
-            gate2.setPosition(START_ANGLE + (2.0 / 15.0));
-
-            scheduler.setEvent(1000L, "resetGate", () -> {
-
-                gate1.setPosition(1-START_ANGLE);
-                gate2.setPosition(1-START_ANGLE);
-
-            });
+            manualFire();
 
         }
 
     }
 
-    public void burstFirst(){
+    public void burstFire(){
 
+        fire();
 
+        isFiring = true;
 
+        scheduler.setEvent(1000L, "reset1" , this::resetGate);
+
+        scheduler.setEvent(1500L, "increment1" , () -> {
+
+            incrementSpindexer(true);
+
+        });
+
+        scheduler.setEvent(2000L, "fire2" , this::fire);
+
+        scheduler.setEvent(3000L, "reset2" , this::resetGate);
+
+        scheduler.setEvent(3500L, "increment2" , () -> {
+
+            incrementSpindexer(true);
+
+        });
+
+        scheduler.setEvent(4000L, "fire3" , this::fire);
+
+        scheduler.setEvent(5000L, "reset3" , () -> {
+
+            resetGate();
+            isFiring = false;
+
+        });
+
+    }
+
+    public void manualFire(){
+
+        fire();
+        isFiring = true;
+
+        scheduler.setEvent(1000L, "resetGate", () -> {;
+
+            resetGate();
+
+            isFiring = false;
+
+        });
+
+    }
+
+    public void fire(){
+
+        gate1.setPosition(1 - START_ANGLE + (-2.0 / 15.0));
+        gate2.setPosition(START_ANGLE + (2.0 / 15.0));
+
+    }
+
+    public void resetGate(){
+
+        gate1.setPosition(1-START_ANGLE);
+        gate2.setPosition(START_ANGLE);
+
+    }
+
+    public void incrementSpindexer(boolean forward){
+
+        int direction = forward ? INCREMENT : -INCREMENT;
+
+        motor.setFixedRotation(0.6 , motor.getPosition() + direction);
 
     }
 

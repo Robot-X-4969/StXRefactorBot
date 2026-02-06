@@ -14,7 +14,7 @@ public class FlywheelTest extends XOpMode {
     @Override
     public void init_modules() {
 
-        registerModule(new Flywheel(this), XRobotContext.ModuleType.ACTIVE);
+
 
     }
 

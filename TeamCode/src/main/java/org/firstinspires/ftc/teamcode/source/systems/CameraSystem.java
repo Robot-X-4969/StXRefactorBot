@@ -123,4 +123,10 @@ public class CameraSystem extends XSystem {
 
     }
 
+    public XCamera getCamera(){
+
+        return camera;
+
+    }
+
 }

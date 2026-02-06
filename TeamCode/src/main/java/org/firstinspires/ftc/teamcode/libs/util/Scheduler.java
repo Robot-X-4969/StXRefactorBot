@@ -2,7 +2,9 @@ package org.firstinspires.ftc.teamcode.libs.util;
 
 import java.util.HashMap;
 import java.util.Iterator;
-
+/**
+    Scheduler class that manages scheduling and execution of events.
+*/
 public class Scheduler {
 
     private final HashMap<String, Event> eventMap = new HashMap<>();

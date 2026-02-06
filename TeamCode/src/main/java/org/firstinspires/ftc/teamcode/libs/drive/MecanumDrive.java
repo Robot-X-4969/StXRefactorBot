@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode.libs.drive;
 
+import org.firstinspires.ftc.teamcode.libs.components.XDriverStation;
 import org.firstinspires.ftc.teamcode.libs.components.XMotor;
 import org.firstinspires.ftc.teamcode.libs.templates.XOpMode;
 import org.firstinspires.ftc.teamcode.libs.templates.XSystem;
+import org.firstinspires.ftc.teamcode.libs.util.Scheduler;
 
 
 public class MecanumDrive extends XSystem {
@@ -29,7 +31,9 @@ public class MecanumDrive extends XSystem {
     }
 
     @Override
-    public void init() {
+    public void init(Scheduler scheduler, XDriverStation driverStation) {
+
+        super.init(scheduler, driverStation);
 
         frontLeft = new XMotor(op, "frontLeft");
         frontRight = new XMotor(op, "frontRight");

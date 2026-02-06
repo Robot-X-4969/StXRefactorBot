@@ -46,7 +46,7 @@ public class Stopwatch {
 
     public boolean isTimerDone(){
 
-        return isTimerRunning() && remainingNanoTime() == 0;
+        return targetTime != 0 && remainingNanoTime() <= 0;
 
     }
 

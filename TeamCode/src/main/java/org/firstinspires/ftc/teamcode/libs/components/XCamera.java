@@ -34,6 +34,7 @@ public class XCamera {
     private final List<Double> blobYDegrees = new ArrayList<>();
     private final List<Double> blobXPositions = new ArrayList<>();
     private final List<Double> blobYPositions = new ArrayList<>();
+    private final List<Double> tagAreas = new ArrayList<>();
 
     /**
      * Creates a new XCamera component.
@@ -98,13 +99,14 @@ public class XCamera {
      */
     public void getTagData(LLResult result){
 
-        if(result != null && result.isValid()) {
+        tagIds.clear();
+        tagXDegrees.clear();
+        tagYDegrees.clear();
+        tagXPositions.clear();
+        tagYPositions.clear();
+        tagAreas.clear();
 
-            tagIds.clear();
-            tagXDegrees.clear();
-            tagYDegrees.clear();
-            tagXPositions.clear();
-            tagYPositions.clear();
+        if(result != null && result.isValid()) {
 
             List<LLResultTypes.FiducialResult> fiducialResults = result.getFiducialResults();
 
@@ -118,11 +120,14 @@ public class XCamera {
                 double tx = fiducialResult.getTargetPoseCameraSpace().getPosition().x;
                 double ty = fiducialResult.getTargetPoseCameraSpace().getPosition().y;
 
+                double ta = fiducialResult.getTargetArea();
+
                 tagIds.add(fiducialId);
                 tagXDegrees.add(txdeg);
                 tagYDegrees.add(tydeg);
                 tagXPositions.add(tx);
                 tagYPositions.add(ty);
+                tagAreas.add(ta);
 
             }
 
@@ -138,12 +143,12 @@ public class XCamera {
      */
     public void getColorData(LLResult result){
 
-        if(result != null && result.isValid()) {
+        blobXDegrees.clear();
+        blobYDegrees.clear();
+        blobXPositions.clear();
+        blobYPositions.clear();
 
-            blobXDegrees.clear();
-            blobYDegrees.clear();
-            blobXPositions.clear();
-            blobYPositions.clear();
+        if(result != null && result.isValid()) {
 
             List<LLResultTypes.ColorResult> colorResults = result.getColorResults();
 
@@ -202,6 +207,12 @@ public class XCamera {
     public double getTy(int index) {
 
         return tagYDegrees.get(index);
+
+    }
+
+    public double getTa(int index) {
+
+        return tagAreas.get(index);
 
     }
 
