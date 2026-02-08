@@ -19,9 +19,19 @@ public class XRobotContext {
 
     public final XOpMode op;
 
+    public final XAuton auton;
+
     public XRobotContext(XOpMode op){
 
         this.op = op;
+        this.auton = null;
+
+    }
+
+    public XRobotContext(XAuton auton){
+
+        this.op = null;
+        this.auton = auton;
 
     }
 

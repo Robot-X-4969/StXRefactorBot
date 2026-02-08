@@ -13,26 +13,15 @@ public class Flywheel extends XSystem {
 
     XMotor motor1, motor2;
     XServo servo1, servo2;
-
     CameraSystem cameraSystem;
-
-    private double angleOffset = 17.0;
-
-    private double ratio = 2.0;
 
     private int index;
 
     private double lastError;
 
-    private double theta;
+    private double normalizedTheta;
 
-    private double velocity;
-
-    private double distance;
-    private double phi = -45;
-
-    private double ta = 0.0;
-
+    private double RPM;
     private double F;
     private double I;
 
@@ -95,9 +84,6 @@ public class Flywheel extends XSystem {
         servo2 = new XServo(op, "hood2", 0.0);
         servo2.init();
 
-        increment(0);
-
-        //setPIDFCoefficients();
 
     }
 
@@ -107,17 +93,16 @@ public class Flywheel extends XSystem {
         double currentTime = System.currentTimeMillis() / 1000.0;
         double deltaTime = currentTime - lastTime;
 
-        PIDF(deltaTime);
+        calculateAngleAndRPM();
+
+        servo1.setPosition(normalizedTheta);
+        servo2.setPosition(0.99 - normalizedTheta);
+
+        powerMotors(deltaTime);
 
         super.loop();
 
         lastTime = currentTime;
-
-        calculateAngle();
-        calculateAngle();
-
-
-        //setPIDFCoefficients();
 
     }
 
@@ -131,6 +116,7 @@ public class Flywheel extends XSystem {
     @Override
     public void control_loop(){
 
+        /*
         if (driverStation.getGamepad1().getDpadLeft().wasPressed()) {
 
             increment(-1);
@@ -140,17 +126,18 @@ public class Flywheel extends XSystem {
             increment(1);
 
         }
+         */
 
     }
 
     @Override
     public void stop(){
 
-        motor1.setPower(MOTOR_SPEEDS[0]);
-        motor2.setPower(MOTOR_SPEEDS[0]);
+        motor1.setPower(0.0);
+        motor2.setPower(0.0);
 
-        servo1.setPosition(SERVO_POSITIONS[0]);
-        servo2.setPosition(SERVO_POSITIONS[0]);
+        servo1.setPosition(0.0);
+        servo2.setPosition(0.0);
 
     }
 
@@ -165,10 +152,6 @@ public class Flywheel extends XSystem {
         op.telemetry.addData("I", I);
         op.telemetry.addData("D", D);
         op.telemetry.addData("Power", power);
-        op.telemetry.addData("theta", theta);
-        op.telemetry.addData("distance", distance);
-        op.telemetry.addData("ta", ta);
-
 
     }
 
@@ -176,36 +159,17 @@ public class Flywheel extends XSystem {
 
         index = Math.max(0, Math.min(index + increment, MOTOR_SPEEDS.length - 1));
 
-        //motor1.setRpm(MOTOR_SPEEDS[index] * ratio);
-        //motor2.setRpm(MOTOR_SPEEDS[index] * ratio);
-
         servo1.setPosition(SERVO_POSITIONS[index]);
         servo2.setPosition(0.99 - SERVO_POSITIONS[index]);
     }
 
-    public void setPIDFCoefficients() {
-
-        /*
-        double F = (32767 / motor1.getMaxTicksPerSecond()) * (motor1.getNominalVoltage() / motor1.getVoltage());
-        double P = 0.00 * F;
-        double I = 0.0 * P;
-        double D = 0.0;
-
-        motor1.setPidfCoefficients(P, I, D, F);
-        motor2.setPidfCoefficients(P, I, D, F);
-
-         */
-
-    }
-
-    public void PIDF(double deltaTime) {
+    public void powerMotors(double deltaTime) {
 
         double ratio = 1.0 / 3.0;
-        double targetRPM = MOTOR_SPEEDS[index] * ratio;
 
-        double error = targetRPM - motor2.getCurrentRPM();
+        double error = this.RPM - motor2.getCurrentRPM();
 
-        F = (1.0 / motor2.getMaxRPM()) * targetRPM;
+        F = (1.0 / motor2.getMaxRPM()) * this.RPM;
 
         P = 0.0055 * error;
         I += 0.0 * error * deltaTime;
@@ -219,36 +183,36 @@ public class Flywheel extends XSystem {
 
     }
 
-    public void calculateAngle(){
-
-        double g = 9.8;
-
-        double h = 0.99;
+    public void calculateAngleAndRPM(){
 
         int index = cameraSystem.getCamera().getAprilTagIndex(20);
 
         if(index != -1){
 
-            distance = 1.5915 * Math.pow(cameraSystem.getCamera().getTa(index) * 100.0, -0.601);
+            final double velocityScalar = 1.0;
+            final double distanceScalar = 1.0;
 
-            ta = cameraSystem.getCamera().getTa(index);
+            final double distance = 1.5915 * Math.pow(cameraSystem.getCamera().getTa(index) * 100.0, -0.601) * distanceScalar;
+            final double angleOffset = 17.0;
+            final double ratio = 2.0;
+            final double g = 9.8;
+            final double h = 0.99;
+            final double phi = -45.0;
+            final double pi = 3.1415926535;
 
-            theta = (Math.toDegrees(Math.atan((2.0 * h / distance) - Math.tan(Math.toRadians(phi)))) - angleOffset) / 130.0 * 2.0 ;
+            final double wheelRadius = 0.05;
 
+            final double theta = (Math.toDegrees(Math.atan((2.0 * h / distance) - Math.tan(Math.toRadians(phi)))));
 
+            this.normalizedTheta = (theta - angleOffset) * (1.0 / 130.0) * ratio;
 
-        } else {
+            final double velocity = Math.sqrt((g * Math.pow(distance, 2)) / (2.0 * (Math.tan(Math.toRadians(theta)) * distance - h) * Math.pow(Math.cos(Math.toRadians(theta)), 2)));
 
-            theta = 0.0;
+            final double adjustedVelocity = velocity * velocityScalar;
 
-            distance = 0.0;
-
-            ta = 0.0;
+            this.RPM = (adjustedVelocity * 60.0) / (2 * pi * wheelRadius);
 
         }
-
-        servo1.setPosition(theta);
-        servo2.setPosition(0.99 - theta);
 
     }
 
