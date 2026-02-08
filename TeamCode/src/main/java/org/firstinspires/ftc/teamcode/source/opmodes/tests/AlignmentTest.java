@@ -5,10 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.libs.drive.MecanumOrientationDrive;
 import org.firstinspires.ftc.teamcode.libs.templates.XOpMode;
 
-import org.firstinspires.ftc.teamcode.libs.templates.XRobotContext;
+import org.firstinspires.ftc.teamcode.libs.templates.XSystemManager;
 import org.firstinspires.ftc.teamcode.source.systems.CameraSystem;
-
-import javax.crypto.ExemptionMechanism;
 
 @TeleOp (name = "Alignment Test", group = "Tests")
 public class AlignmentTest extends XOpMode {
@@ -19,8 +17,8 @@ public class AlignmentTest extends XOpMode {
     @Override
     public void init_modules() {
 
-        registerModule(drive, XRobotContext.ModuleType.ACTIVE);
-        registerModule(camera, XRobotContext.ModuleType.ACTIVE);
+        registerModule(drive, XSystemManager.ModuleType.ACTIVE);
+        registerModule(camera, XSystemManager.ModuleType.ACTIVE);
 
     }
 

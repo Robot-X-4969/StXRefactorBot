@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.libs.drive.MecanumOrientationDrive;
 import org.firstinspires.ftc.teamcode.libs.templates.XOpMode;
 
-import org.firstinspires.ftc.teamcode.libs.templates.XRobotContext;
+import org.firstinspires.ftc.teamcode.libs.templates.XSystemManager;
 import org.firstinspires.ftc.teamcode.source.systems.CameraSystem;
 import org.firstinspires.ftc.teamcode.source.systems.Flywheel;
 import org.firstinspires.ftc.teamcode.source.systems.IntakeSystem;
@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.source.systems.Spindexer;
 @TeleOp (name = "Driver Test", group = "Teleop")
 public class Teleop2026 extends XOpMode {
 
-    MecanumOrientationDrive drive = new MecanumOrientationDrive(this, false);
+    MecanumOrientationDrive drive = new MecanumOrientationDrive(this);
     CameraSystem cameraSystem = new CameraSystem(this, drive);
     Flywheel flywheel = new Flywheel(this, cameraSystem);
     Spindexer spindexer = new Spindexer(this);
@@ -23,11 +23,11 @@ public class Teleop2026 extends XOpMode {
     @Override
     public void init_modules() {
 
-        registerModule(drive, XRobotContext.ModuleType.ACTIVE);
-        registerModule(cameraSystem, XRobotContext.ModuleType.ACTIVE);
-        registerModule(flywheel, XRobotContext.ModuleType.ACTIVE);
-        registerModule(spindexer, XRobotContext.ModuleType.ACTIVE);
-        registerModule(intakeSystem, XRobotContext.ModuleType.ACTIVE);
+        registerModule(drive, XSystemManager.ModuleType.ACTIVE);
+        registerModule(cameraSystem, XSystemManager.ModuleType.ACTIVE);
+        registerModule(flywheel, XSystemManager.ModuleType.ACTIVE);
+        registerModule(spindexer, XSystemManager.ModuleType.ACTIVE);
+        registerModule(intakeSystem, XSystemManager.ModuleType.ACTIVE);
 
     }
 
@@ -41,7 +41,5 @@ public class Teleop2026 extends XOpMode {
         flywheel.displayTelemetry();
 
     }
-
-
 
 }

@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.libs.components.XDriverStation;
 import org.firstinspires.ftc.teamcode.libs.components.XMotor;
 import org.firstinspires.ftc.teamcode.libs.components.XServo;
-import org.firstinspires.ftc.teamcode.libs.templates.XOpMode;
+import org.firstinspires.ftc.teamcode.libs.templates.XOpContext;
 import org.firstinspires.ftc.teamcode.libs.templates.XSystem;
 import org.firstinspires.ftc.teamcode.libs.util.Scheduler;
 
@@ -50,9 +50,9 @@ public class Flywheel extends XSystem {
             0.16
     };
 
-    public Flywheel(XOpMode op, CameraSystem cameraSystem) {
+    public Flywheel(XOpContext ctx, CameraSystem cameraSystem) {
 
-        super(op);
+        super(ctx);
 
         this.cameraSystem = cameraSystem;
 
@@ -63,8 +63,8 @@ public class Flywheel extends XSystem {
 
         super.init(scheduler, driverStation);
 
-        motor1 = new XMotor(op, "flywheel1", 103.8, 1400, 12.0);
-        motor2 = new XMotor(op, "flywheel2", 103.8, 1400, 12.0);
+        motor1 = new XMotor(context, "flywheel1", 103.8, 1400, 12.0);
+        motor2 = new XMotor(context, "flywheel2", 103.8, 1400, 12.0);
 
         motor1.init();
         motor2.init();
@@ -78,10 +78,10 @@ public class Flywheel extends XSystem {
         motor2.setReverse(false);
 
 
-        servo1 = new XServo(op, "hood1", 0.0);
+        servo1 = new XServo(context, "hood1", 0.0);
         servo1.init();
 
-        servo2 = new XServo(op, "hood2", 0.0);
+        servo2 = new XServo(context, "hood2", 0.0);
         servo2.init();
 
 
@@ -144,14 +144,14 @@ public class Flywheel extends XSystem {
     @Override
     public void displayTelemetry(){
 
-        op.telemetry.addData("Flywheel Target RPM: ", MOTOR_SPEEDS[index]);
-        op.telemetry.addData("Flywheel 1 Current RPM: ", motor1.getCurrentRPM());
-        op.telemetry.addData("Flywheel 2 Current RPM: ", motor2.getCurrentRPM());
-        op.telemetry.addData("F", F);
-        op.telemetry.addData("P", P);
-        op.telemetry.addData("I", I);
-        op.telemetry.addData("D", D);
-        op.telemetry.addData("Power", power);
+        context.getContextTelemetry().addData("Flywheel Target RPM: ", MOTOR_SPEEDS[index]);
+        context.getContextTelemetry().addData("Flywheel 1 Current RPM: ", motor1.getCurrentRPM());
+        context.getContextTelemetry().addData("Flywheel 2 Current RPM: ", motor2.getCurrentRPM());
+        context.getContextTelemetry().addData("F", F);
+        context.getContextTelemetry().addData("P", P);
+        context.getContextTelemetry().addData("I", I);
+        context.getContextTelemetry().addData("D", D);
+        context.getContextTelemetry().addData("Power", power);
 
     }
 

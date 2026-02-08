@@ -2,18 +2,19 @@ package org.firstinspires.ftc.teamcode.libs.components;
 
 import com.qualcomm.robotcore.hardware.ServoImplEx;
 
+import org.firstinspires.ftc.teamcode.libs.templates.XOpContext;
 import org.firstinspires.ftc.teamcode.libs.templates.XOpMode;
 
 public class XServo {
 
-    private final XOpMode op;
+    private final XOpContext context;
     private final String servoName;
     private ServoImplEx servo;
     private double currentPosition;
 
-    public XServo(XOpMode op, String servoName, double position) {
+    public XServo(XOpContext ctx, String servoName, double position) {
 
-        this.op = op;
+        this.context = ctx;
         this.servoName = servoName;
         this.currentPosition = position;
 
@@ -21,7 +22,7 @@ public class XServo {
 
     public void init() {
 
-        servo = op.hardwareMap.get(ServoImplEx.class, servoName);
+        servo = context.getContextHardwareMap().get(ServoImplEx.class, servoName);
 
         setPosition(currentPosition);
 

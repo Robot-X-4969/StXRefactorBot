@@ -8,15 +8,17 @@ import java.util.List;
 
 public abstract class XSystem {
 
-    protected final XOpMode op;
+    protected final XOpContext context;
 
     protected Scheduler scheduler;
 
     protected XDriverStation driverStation;
 
-    public XSystem(XOpMode op) {
+    protected boolean isAutonomousSystem;
 
-        this.op = op;
+    public XSystem(XOpContext ctx){
+
+        this.context = ctx;
 
     }
 

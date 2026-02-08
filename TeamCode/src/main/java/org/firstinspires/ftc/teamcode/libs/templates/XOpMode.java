@@ -1,13 +1,15 @@
 package org.firstinspires.ftc.teamcode.libs.templates;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.libs.components.XDriverStation;
 import org.firstinspires.ftc.teamcode.libs.util.Scheduler;
 
-public abstract class XOpMode extends OpMode {
+public abstract class XOpMode extends OpMode implements XOpContext{
 
-    private final XRobotContext context = new XRobotContext(this);
+    private final XSystemManager manager = new XSystemManager(this);
 
     private XDriverStation driverStation;
 
@@ -26,13 +28,13 @@ public abstract class XOpMode extends OpMode {
 
         init_modules();
 
-        for(XSystem system : context.getActiveSystems()){
+        for(XSystem system : manager.getActiveSystems()){
 
             system.init(scheduler, driverStation);
 
         }
 
-        for(XSystem system : context.getInactiveSystems()){
+        for(XSystem system : manager.getInactiveSystems()){
 
             system.init(scheduler, driverStation);
 
@@ -59,7 +61,7 @@ public abstract class XOpMode extends OpMode {
 
         }
 
-        for (XSystem system : context.getActiveSystems()) {
+        for (XSystem system : manager.getActiveSystems()) {
 
             system.init_loop();
 
@@ -70,7 +72,7 @@ public abstract class XOpMode extends OpMode {
     @Override
     public void start() {
 
-        for(XSystem system : context.getActiveSystems()){
+        for(XSystem system : manager.getActiveSystems()){
 
             system.start();
 
@@ -85,7 +87,7 @@ public abstract class XOpMode extends OpMode {
 
         if (driverStation != null) driverStation.update();
 
-        for(XSystem system : context.getActiveSystems()){
+        for(XSystem system : manager.getActiveSystems()){
 
             system.loop();
 
@@ -98,7 +100,7 @@ public abstract class XOpMode extends OpMode {
     @Override
     public void stop() {
 
-        for(XSystem system : context.getActiveSystems()){
+        for(XSystem system : manager.getActiveSystems()){
 
             system.stop();
 
@@ -113,28 +115,34 @@ public abstract class XOpMode extends OpMode {
 
     }
 
-    public void registerModule(XSystem module, XRobotContext.ModuleType type){
+    public void registerModule(XSystem module, XSystemManager.ModuleType type){
 
-        context.register_module(module, type);
-
-    }
-
-    public XDriverStation getDriverStation(){
-
-        return driverStation;
+        manager.register_module(module, type);
 
     }
 
+    @Override
     public Scheduler getScheduler() {
 
         return scheduler;
 
     }
 
+    @Override
     public XDriverStation getXDriverStation() {
 
         return driverStation;
 
+    }
+
+    @Override
+    public HardwareMap getContextHardwareMap() {
+        return hardwareMap;
+    }
+
+    @Override
+    public Telemetry getContextTelemetry() {
+        return telemetry;
     }
 
 }

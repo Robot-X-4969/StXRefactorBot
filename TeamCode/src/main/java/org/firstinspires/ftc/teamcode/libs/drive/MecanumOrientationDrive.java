@@ -4,6 +4,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.libs.components.XDriverStation;
 import org.firstinspires.ftc.teamcode.libs.components.XIMU;
 import org.firstinspires.ftc.teamcode.libs.components.XMotor;
+import org.firstinspires.ftc.teamcode.libs.templates.XAuton;
+import org.firstinspires.ftc.teamcode.libs.templates.XOpContext;
 import org.firstinspires.ftc.teamcode.libs.templates.XOpMode;
 import org.firstinspires.ftc.teamcode.libs.templates.XSystem;
 import org.firstinspires.ftc.teamcode.libs.util.Scheduler;
@@ -27,14 +29,11 @@ public class MecanumOrientationDrive extends XSystem {
     private double offset;
     private boolean orientationMode;
     private boolean allowedRotation;
-    private boolean autonomousMode;
 
 
-    public MecanumOrientationDrive(XOpMode op, boolean autonomousMode) {
+    public MecanumOrientationDrive(XOpContext ctx) {
 
-        super(op);
-
-        this.autonomousMode = autonomousMode;
+        super(ctx);
 
     }
 
@@ -43,10 +42,10 @@ public class MecanumOrientationDrive extends XSystem {
 
         super.init(scheduler, driverStation);
 
-        frontLeft = new XMotor(op, "frontLeft");
-        frontRight = new XMotor(op, "frontRight");
-        backRight = new XMotor(op, "backRight");
-        backLeft = new XMotor(op, "backLeft");
+        frontLeft = new XMotor(context, "frontLeft");
+        frontRight = new XMotor(context, "frontRight");
+        backRight = new XMotor(context, "backRight");
+        backLeft = new XMotor(context, "backLeft");
 
         frontLeft.init();
         frontRight.init();
@@ -57,7 +56,7 @@ public class MecanumOrientationDrive extends XSystem {
         backRight.setReverse(true);
         backLeft.setReverse(true);
 
-        orientationSensor = new XIMU(op, "imu");
+        orientationSensor = new XIMU(context, "imu");
         orientationSensor.init();
 
         lastOrientation = new Orientation();
@@ -93,10 +92,10 @@ public class MecanumOrientationDrive extends XSystem {
     @Override
     public void displayTelemetry() {
 
-        op.telemetry.addData("Orientation Mode", orientationMode);
-        op.telemetry.addData("Global Angle", globalAngle);
-        op.telemetry.addData("Offset", offset);
-        op.telemetry.addData("Robot Angle", globalAngle - offset);
+        context.getContextTelemetry().addData("Orientation Mode", orientationMode);
+        context.getContextTelemetry().addData("Global Angle", globalAngle);
+        context.getContextTelemetry().addData("Offset", offset);
+        context.getContextTelemetry().addData("Robot Angle", globalAngle - offset);
 
     }
 
@@ -105,13 +104,13 @@ public class MecanumOrientationDrive extends XSystem {
 
         updateSticks();
 
-        if(op.getDriverStation().getGamepad1().getY().wasPressed()){
+        if(context.getXDriverStation().getGamepad1().getY().wasPressed()){
 
             orientationMode = !orientationMode;
 
         }
 
-        if(op.getDriverStation().getGamepad1().getX().wasPressed()){
+        if(context.getXDriverStation().getGamepad1().getX().wasPressed()){
 
             refreshOrientation();
 
@@ -121,9 +120,9 @@ public class MecanumOrientationDrive extends XSystem {
 
     public void updateSticks() {
 
-        x = op.getDriverStation().getGamepad1().getLeftStickX();
-        y = op.getDriverStation().getGamepad1().getLeftStickY();
-        r = allowedRotation ? op.getDriverStation().getGamepad1().getRightStickX() : this.autoR;
+        x = context.getXDriverStation().getGamepad1().getLeftStickX();
+        y = context.getXDriverStation().getGamepad1().getLeftStickY();
+        r = allowedRotation ? context.getXDriverStation().getGamepad1().getRightStickX() : this.autoR;
 
     }
 

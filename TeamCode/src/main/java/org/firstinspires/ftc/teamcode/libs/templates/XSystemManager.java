@@ -4,40 +4,31 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class XRobotContext {
+public class XSystemManager {
 
     public enum ModuleType {
         ACTIVE,
-        INACTIVE,
-        AUTONOMOUS
+        INACTIVE
     }
 
-    private final Map<Class<?>, XSystem> modules = new HashMap<>();
     private final ArrayList<XSystem> active_systems = new ArrayList<>();
     private final ArrayList<XSystem> inactive_systems = new ArrayList<>();
-    private final ArrayList<XSystem> autonomous_systems = new ArrayList<>();
 
-    public final XOpMode op;
+    private final XOpContext ctx;
 
-    public final XAuton auton;
+    public XSystemManager(XOpMode op){
 
-    public XRobotContext(XOpMode op){
-
-        this.op = op;
-        this.auton = null;
+        this.ctx = op;
 
     }
 
-    public XRobotContext(XAuton auton){
+    public XSystemManager(XAuton auton){
 
-        this.op = null;
-        this.auton = auton;
+        this.ctx = auton;
 
     }
 
     public void register_module(XSystem module, ModuleType type){
-
-        modules.put(module.getClass(), module);
 
         switch(type){
 
@@ -51,18 +42,7 @@ public class XRobotContext {
                 inactive_systems.add(module);
                 break;
 
-            case AUTONOMOUS:
-
-                autonomous_systems.add(module);
-                break;
-
         }
-
-    }
-
-    public ArrayList<XSystem> getAutonomous_systems() {
-
-        return autonomous_systems;
 
     }
 
@@ -78,9 +58,9 @@ public class XRobotContext {
 
     }
 
-    public XSystem getModule(Class<?> type){
+    public XOpContext getCtx(){
 
-        return modules.get(type);
+        return this.ctx;
 
     }
 

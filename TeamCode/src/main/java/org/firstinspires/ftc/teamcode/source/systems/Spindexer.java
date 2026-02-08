@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.source.systems;
 import org.firstinspires.ftc.teamcode.libs.components.XDriverStation;
 import org.firstinspires.ftc.teamcode.libs.components.XMotor;
 import org.firstinspires.ftc.teamcode.libs.components.XServo;
+import org.firstinspires.ftc.teamcode.libs.templates.XOpContext;
 import org.firstinspires.ftc.teamcode.libs.templates.XOpMode;
 import org.firstinspires.ftc.teamcode.libs.templates.XSystem;
 import org.firstinspires.ftc.teamcode.libs.util.Scheduler;
@@ -24,9 +25,9 @@ public class Spindexer extends XSystem {
     private boolean isFiring;
 
 
-    public Spindexer(XOpMode op) {
+    public Spindexer(XOpContext ctx) {
 
-        super(op);
+        super(ctx);
 
     }
 
@@ -35,12 +36,12 @@ public class Spindexer extends XSystem {
 
         super.init(scheduler, driverStation);
 
-        motor = new XMotor(op, "spindexer");
+        motor = new XMotor(context, "spindexer");
         motor.init();
 
-        gate1 = new XServo(op, "gate1", 1-START_ANGLE);
+        gate1 = new XServo(context, "gate1", 1-START_ANGLE);
         gate1.init();
-        gate2 = new XServo(op, "gate2", START_ANGLE);
+        gate2 = new XServo(context, "gate2", START_ANGLE);
         gate2.init();
 
         isFiring = false;

@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.source.systems;
 import org.firstinspires.ftc.teamcode.libs.components.XCamera;
 import org.firstinspires.ftc.teamcode.libs.components.XDriverStation;
 import org.firstinspires.ftc.teamcode.libs.drive.MecanumOrientationDrive;
+import org.firstinspires.ftc.teamcode.libs.templates.XOpContext;
 import org.firstinspires.ftc.teamcode.libs.templates.XOpMode;
 import org.firstinspires.ftc.teamcode.libs.templates.XSystem;
 import org.firstinspires.ftc.teamcode.libs.util.Scheduler;
@@ -15,9 +16,9 @@ public class CameraSystem extends XSystem {
 
     private boolean isAligning;
 
-    public CameraSystem(XOpMode op, MecanumOrientationDrive drive) {
+    public CameraSystem(XOpContext ctx, MecanumOrientationDrive drive) {
 
-        super(op);
+        super(ctx);
 
         this.drive = drive;
 
@@ -28,7 +29,7 @@ public class CameraSystem extends XSystem {
 
         super.init(scheduler, driverStation);
 
-        this.camera = new XCamera(op, "limelight");
+        this.camera = new XCamera(context, "limelight");
 
         camera.init();
 
@@ -64,7 +65,7 @@ public class CameraSystem extends XSystem {
     @Override
     public void control_loop()  {
 
-        if(camera.seesAprilTag(20) && op.getDriverStation().getGamepad1().getA().wasPressed() && !isAligning){
+        if(camera.seesAprilTag(20) && context.getXDriverStation().getGamepad1().getA().wasPressed() && !isAligning){
 
             isAligning = true;
 
@@ -77,7 +78,7 @@ public class CameraSystem extends XSystem {
     @Override
     public void displayTelemetry(){
 
-        op.telemetry.addData("Camera Sees Tag 20: ", camera.seesAprilTag(20));
+        context.getContextTelemetry().addData("Camera Sees Tag 20: ", camera.seesAprilTag(20));
 
         /*
         if(!camera.seesAprilTag(20)){
@@ -88,9 +89,9 @@ public class CameraSystem extends XSystem {
 
          */
 
-        op.telemetry.addData("Tag 20 X Angle: ", "N/A");
+        context.getContextTelemetry().addData("Tag 20 X Angle: ", "N/A");
 
-        op.telemetry.addData("Is Aligning: ", isAligning);
+        context.getContextTelemetry().addData("Is Aligning: ", isAligning);
 
 
     }

@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.libs.components;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
+import org.firstinspires.ftc.teamcode.libs.templates.XOpContext;
 import org.firstinspires.ftc.teamcode.libs.templates.XOpMode;
 
 /**
@@ -12,7 +13,7 @@ import org.firstinspires.ftc.teamcode.libs.templates.XOpMode;
  */
 public class XMotor {
 
-    private final XOpMode op;
+    private final XOpContext context;
     private final String motorName;
     private final double ticksPerRev;
     private final double maxRPM;
@@ -28,15 +29,15 @@ public class XMotor {
     /**
      * XMotor Constructor
      *
-     * @param op                The OpMode in which this motor runs.
+     * @param ctx               The OpMode in which this motor runs.
      * @param motorName         The name the motor is configured to through the RevHub.
      * @param ticksPerRev       The number of ticks per revolution for this motor.
      * @param maxRPM            The maximum rotations per minute for this motor.
      * @param nominalVoltage    The nominal voltage for this motor.
      */
-    public XMotor(XOpMode op, String motorName, double ticksPerRev, double maxRPM, double nominalVoltage) {
+    public XMotor(XOpContext ctx, String motorName, double ticksPerRev, double maxRPM, double nominalVoltage) {
 
-        this.op = op;
+        this.context = ctx;
 
         this.motorName = motorName;
 
@@ -53,12 +54,12 @@ public class XMotor {
     /**
      * XMotor Constructor
      *
-     * @param op        The OpMode in which this motor runs.
+     * @param ctx        The OpMode in which this motor runs.
      * @param motorName The name the motor is configured to through the RevHub.
      */
-    public XMotor(XOpMode op, String motorName) {
+    public XMotor(XOpContext ctx, String motorName) {
 
-        this.op = op;
+        this.context = ctx;
 
         this.motorName = motorName;
 
@@ -73,8 +74,8 @@ public class XMotor {
      */
     public void init() {
 
-        this.motor = op.hardwareMap.get(DcMotorEx.class, motorName);
-        this.voltageSensor = op.hardwareMap.voltageSensor.iterator().next();
+        this.motor = context.getContextHardwareMap().get(DcMotorEx.class, motorName);
+        this.voltageSensor = context.getContextHardwareMap().voltageSensor.iterator().next();
 
         useEncoder = false;
 
@@ -186,7 +187,7 @@ public class XMotor {
 
         setPower(power);
 
-        op.getScheduler().scheduleEvent(millis, "stop_motor_" + motorName, this::stop);
+        context.getScheduler().scheduleEvent(millis, "stop_motor_" + motorName, this::stop);
 
     }
 

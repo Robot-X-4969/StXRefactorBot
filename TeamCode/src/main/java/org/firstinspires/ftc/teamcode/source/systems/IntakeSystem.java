@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.source.systems;
 
 import org.firstinspires.ftc.teamcode.libs.components.XDriverStation;
+import org.firstinspires.ftc.teamcode.libs.templates.XOpContext;
 import org.firstinspires.ftc.teamcode.libs.templates.XOpMode;
 import org.firstinspires.ftc.teamcode.libs.templates.XSystem;
 import org.firstinspires.ftc.teamcode.libs.components.XCRServo;
@@ -11,9 +12,9 @@ public class IntakeSystem extends XSystem {
     XCRServo crServo1;
     XCRServo crServo2;
 
-    public IntakeSystem(XOpMode op) {
+    public IntakeSystem(XOpContext ctx) {
 
-        super(op);
+        super(ctx);
 
     }
 
@@ -22,8 +23,8 @@ public class IntakeSystem extends XSystem {
 
         super.init(scheduler, driverStation);
 
-        crServo1 = new XCRServo(op, "intakeServo1");
-        crServo2 = new XCRServo(op, "intakeServo2");
+        crServo1 = new XCRServo(context, "intakeServo1");
+        crServo2 = new XCRServo(context, "intakeServo2");
         crServo1.init();
         crServo2.init();
 

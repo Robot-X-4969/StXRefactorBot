@@ -4,6 +4,7 @@ import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 
+import org.firstinspires.ftc.teamcode.libs.templates.XOpContext;
 import org.firstinspires.ftc.teamcode.libs.templates.XOpMode;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import java.util.List;
 
 public class XCamera {
 
-    private final XOpMode op;
+    private final XOpContext context;
 
     private Limelight3A limelight;
 
@@ -39,12 +40,12 @@ public class XCamera {
     /**
      * Creates a new XCamera component.
      *
-     * @param op The XOpMode the XCamera component is created in.
+     * @param ctx The XOpMode the XCamera component is created in.
      * @param cameraName Unique name of the camera in the hardware map.
      */
-    public XCamera(XOpMode op, String cameraName) {
+    public XCamera(XOpContext ctx, String cameraName) {
 
-        this.op = op;
+        this.context = ctx;
 
         this.cameraName = cameraName;
 
@@ -59,7 +60,7 @@ public class XCamera {
      */
     public void init() {
 
-        limelight = op.hardwareMap.get(Limelight3A.class, cameraName);
+        limelight = context.getContextHardwareMap().get(Limelight3A.class, cameraName);
         limelight.start();
         index = 0;
         limelight.pipelineSwitch(index);
