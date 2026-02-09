@@ -3,12 +3,9 @@ package org.firstinspires.ftc.teamcode.libs.templates;
 import org.firstinspires.ftc.teamcode.libs.components.XDriverStation;
 import org.firstinspires.ftc.teamcode.libs.util.Scheduler;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public abstract class XSystem {
 
-    protected final XOpContext context;
+    protected final XOpMode op;
 
     protected Scheduler scheduler;
 
@@ -16,9 +13,9 @@ public abstract class XSystem {
 
     protected boolean isAutonomousSystem;
 
-    public XSystem(XOpContext ctx){
+    public XSystem(XOpMode op){
 
-        this.context = ctx;
+        this.op = op;
 
     }
 

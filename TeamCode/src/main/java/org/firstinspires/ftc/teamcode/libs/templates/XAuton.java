@@ -9,11 +9,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.libs.components.XDriverStation;
 import org.firstinspires.ftc.teamcode.libs.util.Scheduler;
 
-enum XAutonType {
-
-}
-
-public abstract class XAuton extends LinearOpMode implements XOpContext {
+public abstract class XAuton extends LinearOpMode implements XOpMode {
 
     private final XSystemManager manager = new XSystemManager(this);
 
@@ -77,14 +73,14 @@ public abstract class XAuton extends LinearOpMode implements XOpContext {
     }
 
     @Override
-    public HardwareMap getContextHardwareMap() {
+    public HardwareMap getHardwareMap() {
 
         return hardwareMap;
 
     }
 
     @Override
-    public Telemetry getContextTelemetry() {
+    public Telemetry getTelemetry() {
 
         return telemetry;
 

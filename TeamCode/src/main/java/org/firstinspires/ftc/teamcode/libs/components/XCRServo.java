@@ -1,13 +1,12 @@
 package org.firstinspires.ftc.teamcode.libs.components;
 
-import org.firstinspires.ftc.teamcode.libs.templates.XOpContext;
 import org.firstinspires.ftc.teamcode.libs.templates.XOpMode;
 
 import com.qualcomm.robotcore.hardware.CRServoImplEx;
 
 public class XCRServo {
 
-    private final XOpContext context;
+    private final XOpMode op;
 
     private final String servoName;
 
@@ -15,9 +14,9 @@ public class XCRServo {
 
     private double power;
 
-    public XCRServo(XOpContext ctx, String servo_name) {
+    public XCRServo(XOpMode op, String servo_name) {
 
-        this.context = ctx;
+        this.op = op;
 
         this.servoName = servo_name;
 
@@ -25,7 +24,7 @@ public class XCRServo {
 
     public void init(){
 
-        this.crServo = context.getContextHardwareMap().get(CRServoImplEx.class, servoName);
+        this.crServo = op.getHardwareMap().get(CRServoImplEx.class, servoName);
 
         power = 0.0;
 

@@ -2,16 +2,16 @@ package org.firstinspires.ftc.teamcode.source.opmodes.tests;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.libs.drive.MecanumOrientationDrive;
-import org.firstinspires.ftc.teamcode.libs.templates.XOpMode;
+import org.firstinspires.ftc.teamcode.libs.drive.MecanumDrive;
+import org.firstinspires.ftc.teamcode.libs.templates.XTeleOp;
 
 import org.firstinspires.ftc.teamcode.libs.templates.XSystemManager;
 import org.firstinspires.ftc.teamcode.source.systems.CameraSystem;
 
 @TeleOp (name = "Alignment Test", group = "Tests")
-public class AlignmentTest extends XOpMode {
+public class AlignmentTest extends XTeleOp {
 
-    MecanumOrientationDrive drive = new MecanumOrientationDrive(this, false);
+    MecanumDrive drive = new MecanumDrive(this, false);
     CameraSystem camera = new CameraSystem(this, drive);
 
     @Override

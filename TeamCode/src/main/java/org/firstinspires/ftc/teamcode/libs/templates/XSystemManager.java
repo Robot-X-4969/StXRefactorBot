@@ -1,8 +1,8 @@
 package org.firstinspires.ftc.teamcode.libs.templates;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class XSystemManager {
 
@@ -14,21 +14,21 @@ public class XSystemManager {
     private final ArrayList<XSystem> active_systems = new ArrayList<>();
     private final ArrayList<XSystem> inactive_systems = new ArrayList<>();
 
-    private final XOpContext ctx;
+    private final XOpMode op;
 
-    public XSystemManager(XOpMode op){
+    public XSystemManager(XTeleOp op){
 
-        this.ctx = op;
+        this.op = op;
 
     }
 
     public XSystemManager(XAuton auton){
 
-        this.ctx = auton;
+        this.op = auton;
 
     }
 
-    public void register_module(XSystem module, ModuleType type){
+    public void register_module(XSystem module, @NonNull ModuleType type){
 
         switch(type){
 
@@ -58,9 +58,9 @@ public class XSystemManager {
 
     }
 
-    public XOpContext getCtx(){
+    public XOpMode getOp(){
 
-        return this.ctx;
+        return this.op;
 
     }
 

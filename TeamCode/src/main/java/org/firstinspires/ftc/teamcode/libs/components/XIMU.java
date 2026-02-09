@@ -7,26 +7,25 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.teamcode.libs.templates.XOpContext;
 import org.firstinspires.ftc.teamcode.libs.templates.XOpMode;
 
 public class XIMU {
 
-    private final XOpContext context;
+    private final XOpMode op;
     private final String imuPath;
 
     private IMU imu;
 
-    public XIMU(XOpContext ctx, String imuPath) {
+    public XIMU(XOpMode op, String imuPath) {
 
-        this.context = ctx;
+        this.op = op;
         this.imuPath = imuPath;
 
     }
 
     public void init(){
 
-        imu = context.getContextHardwareMap().get(IMU.class, imuPath);
+        imu = op.getHardwareMap().get(IMU.class, imuPath);
 
         RevHubOrientationOnRobot.LogoFacingDirection logo = RevHubOrientationOnRobot.LogoFacingDirection.UP;
         RevHubOrientationOnRobot.UsbFacingDirection  usb  = RevHubOrientationOnRobot.UsbFacingDirection.RIGHT;

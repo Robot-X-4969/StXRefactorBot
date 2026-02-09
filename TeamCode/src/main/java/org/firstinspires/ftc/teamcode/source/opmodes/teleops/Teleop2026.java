@@ -2,8 +2,8 @@ package org.firstinspires.ftc.teamcode.source.opmodes.teleops;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.libs.drive.MecanumOrientationDrive;
-import org.firstinspires.ftc.teamcode.libs.templates.XOpMode;
+import org.firstinspires.ftc.teamcode.libs.drive.MecanumDrive;
+import org.firstinspires.ftc.teamcode.libs.templates.XTeleOp;
 
 import org.firstinspires.ftc.teamcode.libs.templates.XSystemManager;
 import org.firstinspires.ftc.teamcode.source.systems.CameraSystem;
@@ -12,9 +12,9 @@ import org.firstinspires.ftc.teamcode.source.systems.IntakeSystem;
 import org.firstinspires.ftc.teamcode.source.systems.Spindexer;
 
 @TeleOp (name = "Driver Test", group = "Teleop")
-public class Teleop2026 extends XOpMode {
+public class Teleop2026 extends XTeleOp {
 
-    MecanumOrientationDrive drive = new MecanumOrientationDrive(this);
+    MecanumDrive drive = new MecanumDrive(this);
     CameraSystem cameraSystem = new CameraSystem(this, drive);
     Flywheel flywheel = new Flywheel(this, cameraSystem);
     Spindexer spindexer = new Spindexer(this);

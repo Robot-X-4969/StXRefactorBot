@@ -2,8 +2,7 @@ package org.firstinspires.ftc.teamcode.source.systems;
 
 import org.firstinspires.ftc.teamcode.libs.components.XCamera;
 import org.firstinspires.ftc.teamcode.libs.components.XDriverStation;
-import org.firstinspires.ftc.teamcode.libs.drive.MecanumOrientationDrive;
-import org.firstinspires.ftc.teamcode.libs.templates.XOpContext;
+import org.firstinspires.ftc.teamcode.libs.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.libs.templates.XOpMode;
 import org.firstinspires.ftc.teamcode.libs.templates.XSystem;
 import org.firstinspires.ftc.teamcode.libs.util.Scheduler;
@@ -12,13 +11,13 @@ public class CameraSystem extends XSystem {
 
     private XCamera camera;
 
-    private MecanumOrientationDrive drive;
+    private final MecanumDrive drive;
 
     private boolean isAligning;
 
-    public CameraSystem(XOpContext ctx, MecanumOrientationDrive drive) {
+    public CameraSystem(XOpMode op, MecanumDrive drive) {
 
-        super(ctx);
+        super(op);
 
         this.drive = drive;
 
@@ -29,7 +28,7 @@ public class CameraSystem extends XSystem {
 
         super.init(scheduler, driverStation);
 
-        this.camera = new XCamera(context, "limelight");
+        this.camera = new XCamera(op, "limelight");
 
         camera.init();
 
@@ -65,7 +64,7 @@ public class CameraSystem extends XSystem {
     @Override
     public void control_loop()  {
 
-        if(camera.seesAprilTag(20) && context.getXDriverStation().getGamepad1().getA().wasPressed() && !isAligning){
+        if(camera.seesAprilTag(20) && op.getXDriverStation().getGamepad1().getA().wasPressed() && !isAligning){
 
             isAligning = true;
 
@@ -78,7 +77,7 @@ public class CameraSystem extends XSystem {
     @Override
     public void displayTelemetry(){
 
-        context.getContextTelemetry().addData("Camera Sees Tag 20: ", camera.seesAprilTag(20));
+        op.getTelemetry().addData("Camera Sees Tag 20: ", camera.seesAprilTag(20));
 
         /*
         if(!camera.seesAprilTag(20)){
@@ -89,9 +88,9 @@ public class CameraSystem extends XSystem {
 
          */
 
-        context.getContextTelemetry().addData("Tag 20 X Angle: ", "N/A");
+        op.getTelemetry().addData("Tag 20 X Angle: ", "N/A");
 
-        context.getContextTelemetry().addData("Is Aligning: ", isAligning);
+        op.getTelemetry().addData("Is Aligning: ", isAligning);
 
 
     }

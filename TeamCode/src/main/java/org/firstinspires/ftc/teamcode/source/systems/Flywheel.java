@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.libs.components.XDriverStation;
 import org.firstinspires.ftc.teamcode.libs.components.XMotor;
 import org.firstinspires.ftc.teamcode.libs.components.XServo;
-import org.firstinspires.ftc.teamcode.libs.templates.XOpContext;
+import org.firstinspires.ftc.teamcode.libs.templates.XOpMode;
 import org.firstinspires.ftc.teamcode.libs.templates.XSystem;
 import org.firstinspires.ftc.teamcode.libs.util.Scheduler;
 
@@ -15,44 +15,20 @@ public class Flywheel extends XSystem {
     XServo servo1, servo2;
     CameraSystem cameraSystem;
 
-    private int index;
-
     private double lastError;
-
     private double normalizedTheta;
-
     private double RPM;
     private double F;
     private double I;
-
     private double P;
-
     private double D;
-
     private double power;
-
     private double lastTime;
 
 
-    private final double[] MOTOR_SPEEDS = new double[]{
-            0.0,
-            3000.0 ,
-            825.0,
-            1025.0,
-            10000.0
-    };
+    public Flywheel(XOpMode op, CameraSystem cameraSystem) {
 
-    private final double[] SERVO_POSITIONS = new double[]{
-            0.0,
-            0.20,
-            0.125,
-            0.16,
-            0.16
-    };
-
-    public Flywheel(XOpContext ctx, CameraSystem cameraSystem) {
-
-        super(ctx);
+        super(op);
 
         this.cameraSystem = cameraSystem;
 
@@ -63,8 +39,8 @@ public class Flywheel extends XSystem {
 
         super.init(scheduler, driverStation);
 
-        motor1 = new XMotor(context, "flywheel1", 103.8, 1400, 12.0);
-        motor2 = new XMotor(context, "flywheel2", 103.8, 1400, 12.0);
+        motor1 = new XMotor(op, "flywheel1", 103.8, 1400, 12.0);
+        motor2 = new XMotor(op, "flywheel2", 103.8, 1400, 12.0);
 
         motor1.init();
         motor2.init();
@@ -78,10 +54,10 @@ public class Flywheel extends XSystem {
         motor2.setReverse(false);
 
 
-        servo1 = new XServo(context, "hood1", 0.0);
+        servo1 = new XServo(op, "hood1", 0.0);
         servo1.init();
 
-        servo2 = new XServo(context, "hood2", 0.0);
+        servo2 = new XServo(op, "hood2", 0.0);
         servo2.init();
 
 
@@ -114,23 +90,6 @@ public class Flywheel extends XSystem {
     }
 
     @Override
-    public void control_loop(){
-
-        /*
-        if (driverStation.getGamepad1().getDpadLeft().wasPressed()) {
-
-            increment(-1);
-
-        } else if (driverStation.getGamepad1().getDpadRight().wasPressed()) {
-
-            increment(1);
-
-        }
-         */
-
-    }
-
-    @Override
     public void stop(){
 
         motor1.setPower(0.0);
@@ -144,30 +103,22 @@ public class Flywheel extends XSystem {
     @Override
     public void displayTelemetry(){
 
-        context.getContextTelemetry().addData("Flywheel Target RPM: ", MOTOR_SPEEDS[index]);
-        context.getContextTelemetry().addData("Flywheel 1 Current RPM: ", motor1.getCurrentRPM());
-        context.getContextTelemetry().addData("Flywheel 2 Current RPM: ", motor2.getCurrentRPM());
-        context.getContextTelemetry().addData("F", F);
-        context.getContextTelemetry().addData("P", P);
-        context.getContextTelemetry().addData("I", I);
-        context.getContextTelemetry().addData("D", D);
-        context.getContextTelemetry().addData("Power", power);
+        op.getTelemetry().addData("Flywheel Target RPM: ", this.RPM);
+        op.getTelemetry().addData("Flywheel 1 Current RPM: ", motor1.getCurrentRPM());
+        op.getTelemetry().addData("Flywheel 2 Current RPM: ", motor2.getCurrentRPM());
+        op.getTelemetry().addData("F", F);
+        op.getTelemetry().addData("P", P);
+        op.getTelemetry().addData("I", I);
+        op.getTelemetry().addData("D", D);
+        op.getTelemetry().addData("Power", power);
 
-    }
-
-    public void increment(int increment) {
-
-        index = Math.max(0, Math.min(index + increment, MOTOR_SPEEDS.length - 1));
-
-        servo1.setPosition(SERVO_POSITIONS[index]);
-        servo2.setPosition(0.99 - SERVO_POSITIONS[index]);
     }
 
     public void powerMotors(double deltaTime) {
 
         double ratio = 1.0 / 3.0;
 
-        double error = this.RPM - motor2.getCurrentRPM();
+        double error = (this.RPM * ratio) - motor2.getCurrentRPM();
 
         F = (1.0 / motor2.getMaxRPM()) * this.RPM;
 
@@ -176,6 +127,7 @@ public class Flywheel extends XSystem {
         D = 0.0 * ((error - lastError) / deltaTime);
 
         power = (P + I + D + F);
+
         motor1.setPower(power);
         motor2.setPower(power);
 
