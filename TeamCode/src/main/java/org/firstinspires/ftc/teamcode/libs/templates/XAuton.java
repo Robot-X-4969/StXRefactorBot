@@ -19,10 +19,6 @@ public abstract class XAuton extends LinearOpMode implements XOpMode {
 
     protected Follower follower;
 
-    protected Pose startingPose;
-
-    protected Pose actionPose;
-
     @Override
     public void runOpMode(){
 
