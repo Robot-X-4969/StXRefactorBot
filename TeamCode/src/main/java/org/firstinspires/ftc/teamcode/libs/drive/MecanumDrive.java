@@ -5,11 +5,11 @@ import org.firstinspires.ftc.teamcode.libs.components.XDriverStation;
 import org.firstinspires.ftc.teamcode.libs.components.XIMU;
 import org.firstinspires.ftc.teamcode.libs.components.XMotor;
 import org.firstinspires.ftc.teamcode.libs.templates.XOpMode;
-import org.firstinspires.ftc.teamcode.libs.templates.XSystem;
+import org.firstinspires.ftc.teamcode.libs.templates.XModule;
 import org.firstinspires.ftc.teamcode.libs.util.Scheduler;
 
 
-public class MecanumDrive extends XSystem {
+public class MecanumDrive extends XModule {
 
     private XMotor frontLeft;
     private XMotor frontRight;

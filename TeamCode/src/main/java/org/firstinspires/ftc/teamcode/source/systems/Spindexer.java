@@ -4,11 +4,11 @@ import org.firstinspires.ftc.teamcode.libs.components.XDriverStation;
 import org.firstinspires.ftc.teamcode.libs.components.XMotor;
 import org.firstinspires.ftc.teamcode.libs.components.XServo;
 import org.firstinspires.ftc.teamcode.libs.templates.XOpMode;
-import org.firstinspires.ftc.teamcode.libs.templates.XSystem;
+import org.firstinspires.ftc.teamcode.libs.templates.XModule;
 import org.firstinspires.ftc.teamcode.libs.util.Scheduler;
 
 
-public class Spindexer extends XSystem {
+public class Spindexer extends XModule {
 
     XMotor motor;
 

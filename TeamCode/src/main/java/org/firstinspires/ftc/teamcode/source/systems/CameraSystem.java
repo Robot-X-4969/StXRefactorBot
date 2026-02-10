@@ -4,10 +4,10 @@ import org.firstinspires.ftc.teamcode.libs.components.XCamera;
 import org.firstinspires.ftc.teamcode.libs.components.XDriverStation;
 import org.firstinspires.ftc.teamcode.libs.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.libs.templates.XOpMode;
-import org.firstinspires.ftc.teamcode.libs.templates.XSystem;
+import org.firstinspires.ftc.teamcode.libs.templates.XModule;
 import org.firstinspires.ftc.teamcode.libs.util.Scheduler;
 
-public class CameraSystem extends XSystem {
+public class CameraSystem extends XModule {
 
     private XCamera camera;
 
@@ -79,14 +79,6 @@ public class CameraSystem extends XSystem {
 
         op.getTelemetry().addData("Camera Sees Tag 20: ", camera.seesAprilTag(20));
 
-        /*
-        if(!camera.seesAprilTag(20)){
-
-            op.telemetry.addData("Tag 20 X Angle: ", camera.getTx(camera.getAprilTagIndex(20)));
-
-        }
-
-         */
 
         op.getTelemetry().addData("Tag 20 X Angle: ", "N/A");
 

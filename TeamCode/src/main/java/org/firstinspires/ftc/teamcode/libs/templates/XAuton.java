@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.libs.templates;
 
 import com.pedropathing.follower.Follower;
-import com.pedropathing.geometry.Pose;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -11,7 +10,7 @@ import org.firstinspires.ftc.teamcode.libs.util.Scheduler;
 
 public abstract class XAuton extends LinearOpMode implements XOpMode {
 
-    private final XSystemManager manager = new XSystemManager(this);
+    private final XModuleManager manager = new XModuleManager(this);
 
     protected final Scheduler scheduler = new Scheduler();
 
@@ -42,13 +41,13 @@ public abstract class XAuton extends LinearOpMode implements XOpMode {
 
         init_modules();
 
-        for(XSystem system : manager.getActiveSystems()) {
+        for(XModule system : manager.getActiveSystems()) {
 
             system.init(this.scheduler, this.driverStation);
 
         }
 
-        for(XSystem system : manager.getActiveSystems()){
+        for(XModule system : manager.getActiveSystems()){
 
             system.init(this.scheduler, this.driverStation);
 
@@ -62,7 +61,7 @@ public abstract class XAuton extends LinearOpMode implements XOpMode {
 
     }
 
-    public void registerModule(XSystem module, XSystemManager.ModuleType type){
+    public void registerModule(XModule module, XModuleManager.ModuleType type){
 
         manager.register_module(module, type);
 

@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.libs.util.Scheduler;
 
 public abstract class XTeleOp extends OpMode implements XOpMode {
 
-    private final XSystemManager manager = new XSystemManager(this);
+    private final XModuleManager manager = new XModuleManager(this);
 
     private XDriverStation driverStation;
 
@@ -28,13 +28,13 @@ public abstract class XTeleOp extends OpMode implements XOpMode {
 
         init_modules();
 
-        for(XSystem system : manager.getActiveSystems()){
+        for(XModule system : manager.getActiveSystems()){
 
             system.init(scheduler, driverStation);
 
         }
 
-        for(XSystem system : manager.getInactiveSystems()){
+        for(XModule system : manager.getInactiveSystems()){
 
             system.init(scheduler, driverStation);
 
@@ -61,7 +61,7 @@ public abstract class XTeleOp extends OpMode implements XOpMode {
 
         }
 
-        for (XSystem system : manager.getActiveSystems()) {
+        for (XModule system : manager.getActiveSystems()) {
 
             system.init_loop();
 
@@ -72,7 +72,7 @@ public abstract class XTeleOp extends OpMode implements XOpMode {
     @Override
     public void start() {
 
-        for(XSystem system : manager.getActiveSystems()){
+        for(XModule system : manager.getActiveSystems()){
 
             system.start();
 
@@ -87,7 +87,7 @@ public abstract class XTeleOp extends OpMode implements XOpMode {
 
         if (driverStation != null) driverStation.update();
 
-        for(XSystem system : manager.getActiveSystems()){
+        for(XModule system : manager.getActiveSystems()){
 
             system.loop();
 
@@ -100,7 +100,7 @@ public abstract class XTeleOp extends OpMode implements XOpMode {
     @Override
     public void stop() {
 
-        for(XSystem system : manager.getActiveSystems()){
+        for(XModule system : manager.getActiveSystems()){
 
             system.stop();
 
@@ -114,7 +114,7 @@ public abstract class XTeleOp extends OpMode implements XOpMode {
 
     }
 
-    public void registerModule(XSystem module, XSystemManager.ModuleType type){
+    public void registerModule(XModule module, XModuleManager.ModuleType type){
 
         manager.register_module(module, type);
 

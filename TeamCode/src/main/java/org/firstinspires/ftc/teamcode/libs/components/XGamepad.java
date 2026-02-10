@@ -56,6 +56,9 @@ public class XGamepad{
 
     }
 
+    /**
+     * Updates the state of the XGamepad by reading the current values from the Gamepad object
+     */
     public void updateGamepad() {
 
         //updateStates the values of all joysticks and triggers
@@ -96,6 +99,7 @@ public class XGamepad{
 
     }
 
+    //getters
     public float getLeftStickX() {
 
         return left_stick_x;

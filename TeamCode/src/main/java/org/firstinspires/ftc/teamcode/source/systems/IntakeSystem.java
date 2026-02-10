@@ -2,11 +2,11 @@ package org.firstinspires.ftc.teamcode.source.systems;
 
 import org.firstinspires.ftc.teamcode.libs.components.XDriverStation;
 import org.firstinspires.ftc.teamcode.libs.templates.XOpMode;
-import org.firstinspires.ftc.teamcode.libs.templates.XSystem;
+import org.firstinspires.ftc.teamcode.libs.templates.XModule;
 import org.firstinspires.ftc.teamcode.libs.components.XCRServo;
 import org.firstinspires.ftc.teamcode.libs.util.Scheduler;
 
-public class IntakeSystem extends XSystem {
+public class IntakeSystem extends XModule {
 
     XCRServo crServo1;
     XCRServo crServo2;

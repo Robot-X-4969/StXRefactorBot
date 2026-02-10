@@ -6,10 +6,10 @@ import org.firstinspires.ftc.teamcode.libs.components.XDriverStation;
 import org.firstinspires.ftc.teamcode.libs.components.XMotor;
 import org.firstinspires.ftc.teamcode.libs.components.XServo;
 import org.firstinspires.ftc.teamcode.libs.templates.XOpMode;
-import org.firstinspires.ftc.teamcode.libs.templates.XSystem;
+import org.firstinspires.ftc.teamcode.libs.templates.XModule;
 import org.firstinspires.ftc.teamcode.libs.util.Scheduler;
 
-public class Flywheel extends XSystem {
+public class Flywheel extends XModule {
 
     XMotor motor1, motor2;
     XServo servo1, servo2;

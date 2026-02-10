@@ -11,6 +11,12 @@ public class XServo {
     private ServoImplEx servo;
     private double currentPosition;
 
+    /**
+     * Constructor for the XServo class.
+     * @param op The opmode that this servo is being used in
+     * @param servoName The name of the servo in the hardware map
+     * @param position The initial position of the servo (between 0 and 1)
+     */
     public XServo(XOpMode op, String servoName, double position) {
 
         this.op = op;
@@ -19,6 +25,9 @@ public class XServo {
 
     }
 
+    /**
+     * Initializes the servo by retrieving it from the hardware map and setting it to the initial position.
+     */
     public void init() {
 
         servo = op.getHardwareMap().get(ServoImplEx.class, servoName);
@@ -27,6 +36,11 @@ public class XServo {
 
     }
 
+    /**
+     * Sets the position of the servo and updates the current position variable.
+     *
+     * @param position The desired position of the servo (between 0 and 1)
+     */
     public void setPosition(double position){
 
         servo.setPosition(position);

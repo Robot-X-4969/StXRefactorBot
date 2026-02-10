@@ -6,7 +6,7 @@ import com.pedropathing.paths.PathChain;
 
 import org.firstinspires.ftc.teamcode.libs.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.libs.templates.XAuton;
-import org.firstinspires.ftc.teamcode.libs.templates.XSystemManager;
+import org.firstinspires.ftc.teamcode.libs.templates.XModuleManager;
 import org.firstinspires.ftc.teamcode.source.systems.CameraSystem;
 import org.firstinspires.ftc.teamcode.source.systems.Flywheel;
 import org.firstinspires.ftc.teamcode.source.systems.IntakeSystem;
@@ -113,11 +113,11 @@ public class AutonBlueBasket extends XAuton {
     @Override
     public void init_modules(){
 
-        registerModule(drive, XSystemManager.ModuleType.ACTIVE);
-        registerModule(cameraSystem, XSystemManager.ModuleType.ACTIVE);
-        registerModule(flywheel, XSystemManager.ModuleType.ACTIVE);
-        registerModule(spindexer, XSystemManager.ModuleType.ACTIVE);
-        registerModule(intakeSystem, XSystemManager.ModuleType.ACTIVE);
+        registerModule(drive, XModuleManager.ModuleType.ACTIVE);
+        registerModule(cameraSystem, XModuleManager.ModuleType.ACTIVE);
+        registerModule(flywheel, XModuleManager.ModuleType.ACTIVE);
+        registerModule(spindexer, XModuleManager.ModuleType.ACTIVE);
+        registerModule(intakeSystem, XModuleManager.ModuleType.ACTIVE);
 
     }
 

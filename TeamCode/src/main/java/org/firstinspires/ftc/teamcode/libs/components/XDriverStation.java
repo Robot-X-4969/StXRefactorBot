@@ -10,11 +10,14 @@ public class XDriverStation{
     private final XGamepad xgamepad1;
     private final XGamepad xgamepad2;
 
-    private XGamepad master_gamepad;
-
 
     private boolean dual_player = false;
 
+    /**
+     * Initializes the XDriverStation with the provided Gamepad objects
+     * @param gamepad1 FTC Gamepad 1 object
+     * @param gamepad2 FTC Gamepad 2 object
+     */
     public XDriverStation(Gamepad gamepad1, Gamepad gamepad2){
 
         this.gamepad1 = gamepad1;
@@ -34,6 +37,9 @@ public class XDriverStation{
 
     }
 
+    /**
+     * Updates the button states of the XGamepad objects
+     */
     public void update(){
 
         xgamepad1.updateGamepad();
@@ -64,24 +70,5 @@ public class XDriverStation{
         return xgamepad2;
 
     }
-    
-    public void update_master_gamepad() {
 
-        master_gamepad.getDpadUp().updateState(gamepad1.dpad_up || gamepad2.dpad_up && dual_player);
-        master_gamepad.getDpadDown().updateState(gamepad1.dpad_down || gamepad2.dpad_down && dual_player);
-        master_gamepad.getDpadLeft().updateState(gamepad1.dpad_left || gamepad2.dpad_left && dual_player);
-        master_gamepad.getDpadRight().updateState(gamepad1.dpad_right || gamepad2.dpad_right && dual_player);
-        master_gamepad.getA().updateState(gamepad1.a && !gamepad1.start || gamepad2.a && !gamepad2.start && dual_player);
-        master_gamepad.getB().updateState(gamepad1.b && !gamepad1.start || gamepad2.b && !gamepad2.start && dual_player);
-        master_gamepad.getX().updateState(gamepad1.x || gamepad2.x && dual_player);
-        master_gamepad.getY().updateState(gamepad1.y || gamepad2.y && dual_player);
-        master_gamepad.getGuide().updateState(gamepad1.guide || gamepad2.guide && dual_player);
-        master_gamepad.getStart().updateState(gamepad1.start || gamepad2.start && dual_player);
-        master_gamepad.getStart().updateState(gamepad1.back || gamepad2.back && dual_player);
-        master_gamepad.getLeft_bumper().updateState(gamepad1.left_bumper || gamepad2.left_bumper && dual_player);
-        master_gamepad.getRight_bumper().updateState(gamepad1.right_bumper || gamepad2.right_bumper && dual_player);
-        master_gamepad.getLeft_stick_button().updateState(gamepad1.left_stick_button || gamepad2.left_stick_button && dual_player);
-        master_gamepad.getRight_stick_button().updateState(gamepad1.right_stick_button || gamepad2.right_stick_button && dual_player);
-
-    }
 }

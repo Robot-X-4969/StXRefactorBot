@@ -16,6 +16,12 @@ public class XIMU {
 
     private IMU imu;
 
+    /**
+     * Constructor for the XIMU class.
+     *
+     * @param op      The opmode that this IMU is being used in
+     * @param imuPath The name of the IMU in the hardware map
+     */
     public XIMU(XOpMode op, String imuPath) {
 
         this.op = op;
@@ -23,40 +29,39 @@ public class XIMU {
 
     }
 
-    public void init(){
+    /**
+     * Initializes the IMU by retrieving it from the hardware map and setting the orientation parameters.
+     */
+    public void init() {
 
         imu = op.getHardwareMap().get(IMU.class, imuPath);
 
         RevHubOrientationOnRobot.LogoFacingDirection logo = RevHubOrientationOnRobot.LogoFacingDirection.UP;
-        RevHubOrientationOnRobot.UsbFacingDirection  usb  = RevHubOrientationOnRobot.UsbFacingDirection.RIGHT;
+        RevHubOrientationOnRobot.UsbFacingDirection usb = RevHubOrientationOnRobot.UsbFacingDirection.RIGHT;
 
         imu.initialize(new IMU.Parameters(new RevHubOrientationOnRobot(logo, usb)));
 
     }
 
-    public Orientation getOrientation(){
+    //getters
+    public Orientation getOrientation() {
 
         return imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
     }
 
-    public double getYaw(){
-
-        return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
-
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

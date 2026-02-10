@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.libs.templates;
 import org.firstinspires.ftc.teamcode.libs.components.XDriverStation;
 import org.firstinspires.ftc.teamcode.libs.util.Scheduler;
 
-public abstract class XSystem {
+public abstract class XModule {
 
     protected final XOpMode op;
 
@@ -11,9 +11,8 @@ public abstract class XSystem {
 
     protected XDriverStation driverStation;
 
-    protected boolean isAutonomousSystem;
 
-    public XSystem(XOpMode op){
+    public XModule(XOpMode op){
 
         this.op = op;
 
