@@ -73,9 +73,9 @@ public class MecanumDrive extends XModule {
     }
 
     @Override
-    public void loop() {
+    public void loop(double deltaTime) {
 
-        super.loop();
+        super.loop(deltaTime);
 
         getHeadingAngle();
 

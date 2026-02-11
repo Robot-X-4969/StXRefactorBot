@@ -45,9 +45,9 @@ public class Spindexer extends XModule {
     }
 
     @Override
-    public void loop(){
+    public void loop(double deltaTime) {
 
-        super.loop();
+        super.loop(deltaTime);
 
     }
 

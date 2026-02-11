@@ -14,7 +14,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 public class PedroConstants {
 
-    public static FollowerConstants followerConstants = new FollowerConstants().mass(9.07);
+    public static FollowerConstants followerConstants = new FollowerConstants().mass(14.28);
 
     public static MecanumConstants driveConstants = new MecanumConstants()
             .maxPower(1)
@@ -28,8 +28,8 @@ public class PedroConstants {
             .rightRearMotorDirection(DcMotorEx.Direction.REVERSE);
 
     public static PinpointConstants localizerConstants = new PinpointConstants()
-            .forwardPodY(-5)
-            .strafePodX(0.5)
+            .forwardPodY(4.625)
+            .strafePodX(-1.125)
             .distanceUnit(DistanceUnit.INCH)
             .hardwareMapName("pinpoint")
             .encoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD)
@@ -43,6 +43,7 @@ public class PedroConstants {
         return new FollowerBuilder(followerConstants, hardwareMap)
                 .pathConstraints(pathConstraints)
                 .mecanumDrivetrain(driveConstants)
+                .pinpointLocalizer(localizerConstants)
                 .build();
 
     }

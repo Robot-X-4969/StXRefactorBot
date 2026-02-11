@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.libs.components.XDriverStation;
 import org.firstinspires.ftc.teamcode.libs.components.XMotor;
+import org.firstinspires.ftc.teamcode.libs.components.XPinpoint;
 import org.firstinspires.ftc.teamcode.libs.components.XServo;
 import org.firstinspires.ftc.teamcode.libs.templates.XOpMode;
 import org.firstinspires.ftc.teamcode.libs.templates.XModule;
@@ -14,6 +15,7 @@ public class Flywheel extends XModule {
     XMotor motor1, motor2;
     XServo servo1, servo2;
     CameraSystem cameraSystem;
+    XPinpoint pinpoint;
 
     private double lastError;
     private double normalizedTheta;
@@ -23,14 +25,17 @@ public class Flywheel extends XModule {
     private double P;
     private double D;
     private double power;
-    private double lastTime;
+    private double distance;
+    private double theta;
 
 
-    public Flywheel(XOpMode op, CameraSystem cameraSystem) {
+    public Flywheel(XOpMode op, CameraSystem cameraSystem, XPinpoint pinpoint) {
 
         super(op);
 
         this.cameraSystem = cameraSystem;
+
+        this.pinpoint = pinpoint;
 
     }
 
@@ -53,21 +58,23 @@ public class Flywheel extends XModule {
         motor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motor2.setReverse(false);
 
-
         servo1 = new XServo(op, "hood1", 0.0);
         servo1.init();
 
         servo2 = new XServo(op, "hood2", 0.0);
         servo2.init();
 
+        servo1.setPWMRange(500, 2500);
+        servo2.setPWMRange(500, 2500);
 
     }
 
     @Override
-    public void loop(){
+    public void loop(double deltaTime){
 
-        double currentTime = System.currentTimeMillis() / 1000.0;
-        double deltaTime = currentTime - lastTime;
+        pinpoint.update();
+
+        calculateDistance();
 
         calculateAngleAndRPM();
 
@@ -76,16 +83,13 @@ public class Flywheel extends XModule {
 
         powerMotors(deltaTime);
 
-        super.loop();
-
-        lastTime = currentTime;
+        super.loop(deltaTime);
 
     }
 
     @Override
     public void start(){
 
-        lastTime = System.currentTimeMillis() / 1000.0;
 
     }
 
@@ -111,6 +115,19 @@ public class Flywheel extends XModule {
         op.getTelemetry().addData("I", I);
         op.getTelemetry().addData("D", D);
         op.getTelemetry().addData("Power", power);
+        op.getTelemetry().addData("theta", theta);
+
+        op.getTelemetry().addData("X", pinpoint.getX());
+        op.getTelemetry().addData("Y", pinpoint.getY());
+        op.getTelemetry().addData("Heading", pinpoint.getHeading());
+        op.getTelemetry().addData("distance", distance);
+
+        int index = cameraSystem.getCamera().getAprilTagIndex(20);
+
+        if(index != -1){
+            op.getTelemetry().addData("Area", cameraSystem.getCamera().getTa(index));
+        }
+
 
     }
 
@@ -120,7 +137,7 @@ public class Flywheel extends XModule {
 
         double error = (this.RPM * ratio) - motor2.getCurrentRPM();
 
-        F = (1.0 / motor2.getMaxRPM()) * this.RPM;
+        F = (1.0 / motor2.getMaxRPM()) * (this.RPM * ratio);
 
         P = 0.0055 * error;
         I += 0.0 * error * deltaTime;
@@ -135,34 +152,52 @@ public class Flywheel extends XModule {
 
     }
 
+    public void calculateDistance(){
+
+        this.distance = Math.sqrt(Math.pow(pinpoint.getX() - 138.0, 2) + Math.pow(pinpoint.getY() - (-6.0), 2)) * 0.0254;
+
+    }
+
     public void calculateAngleAndRPM(){
 
         int index = cameraSystem.getCamera().getAprilTagIndex(20);
 
         if(index != -1){
 
-            final double velocityScalar = 1.0;
-            final double distanceScalar = 1.0;
+            final double velocityScalar = 1.5;
 
-            final double distance = 1.5915 * Math.pow(cameraSystem.getCamera().getTa(index) * 100.0, -0.601) * distanceScalar;
-            final double angleOffset = 17.0;
+            final double angleOffset = 40.0;
             final double ratio = 2.0;
             final double g = 9.8;
-            final double h = 0.99;
-            final double phi = -45.0;
+            final double h = 1.0;
+            final double phi = -60.0;
             final double pi = 3.1415926535;
 
-            final double wheelRadius = 0.05;
+            final double wheelRadius = 0.045;
 
-            final double theta = (Math.toDegrees(Math.atan((2.0 * h / distance) - Math.tan(Math.toRadians(phi)))));
+            double theta = (Math.toDegrees(Math.atan((2.0 * h / distance) - Math.tan(Math.toRadians(phi)))));
 
-            this.normalizedTheta = (theta - angleOffset) * (1.0 / 130.0) * ratio;
+            if(theta <= angleOffset){
 
-            final double velocity = Math.sqrt((g * Math.pow(distance, 2)) / (2.0 * (Math.tan(Math.toRadians(theta)) * distance - h) * Math.pow(Math.cos(Math.toRadians(theta)), 2)));
+                this.normalizedTheta = 0.0;
+                theta = 45.0;
+
+            } else {
+
+                this.normalizedTheta = (theta - angleOffset) * (1.0 / 300.0) * ratio;
+
+            }
+
+            this.theta = theta;
+
+            double numerator = g * Math.pow(distance, 2);
+            double denominator = 2.0 * (distance * Math.tan(Math.toRadians(theta)) - h) * Math.pow(Math.cos(Math.toRadians(theta)), 2);
+            double velocity = Math.sqrt(numerator / denominator);
 
             final double adjustedVelocity = velocity * velocityScalar;
 
             this.RPM = (adjustedVelocity * 60.0) / (2 * pi * wheelRadius);
+
 
         }
 

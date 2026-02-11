@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.libs.components;
 
+import com.pedropathing.geometry.Pose;
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -37,11 +38,11 @@ public class XPinpoint {
 
         device = op.getHardwareMap().get(GoBildaPinpointDriver.class, "pinpoint");
 
-        device.setOffsets(xOffset, yOffset, DistanceUnit.MM);
+        device.setOffsets(xOffset, yOffset, DistanceUnit.INCH);
 
         device.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
 
-        device.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.REVERSED);
+        device.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.REVERSED, GoBildaPinpointDriver.EncoderDirection.REVERSED);
 
         device.resetPosAndIMU();
 
@@ -98,6 +99,12 @@ public class XPinpoint {
     public void reset() {
 
         device.resetPosAndIMU();
+
+    }
+
+    public void setStartPose(double x, double y, double heading){
+
+        device.setPosition(new Pose2D(DistanceUnit.INCH, x, y, AngleUnit.DEGREES, heading));
 
     }
 

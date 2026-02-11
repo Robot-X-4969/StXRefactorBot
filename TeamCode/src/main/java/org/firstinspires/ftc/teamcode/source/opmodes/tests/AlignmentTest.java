@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.source.systems.CameraSystem;
 @TeleOp (name = "Alignment Test", group = "Tests")
 public class AlignmentTest extends XTeleOp {
 
-    MecanumDrive drive = new MecanumDrive(this, false);
+    MecanumDrive drive = new MecanumDrive(this);
     CameraSystem camera = new CameraSystem(this, drive);
 
     @Override

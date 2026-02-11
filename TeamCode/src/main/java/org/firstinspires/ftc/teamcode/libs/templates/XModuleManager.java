@@ -46,13 +46,13 @@ public class XModuleManager {
 
     }
 
-    public ArrayList<XModule> getInactiveSystems() {
+    public ArrayList<XModule> getInactiveModules() {
 
         return inactive_modules;
 
     }
 
-    public ArrayList<XModule> getActiveSystems() {
+    public ArrayList<XModule> getActiveModules() {
 
         return active_modules;
 

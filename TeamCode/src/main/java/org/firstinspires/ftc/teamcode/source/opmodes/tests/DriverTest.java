@@ -13,7 +13,7 @@ public class DriverTest extends XTeleOp {
     @Override
     public void init_modules() {
 
-        registerModule(new MecanumDrive(this, false), XModuleManager.ModuleType.ACTIVE);
+        registerModule(new MecanumDrive(this), XModuleManager.ModuleType.ACTIVE);
 
     }
 

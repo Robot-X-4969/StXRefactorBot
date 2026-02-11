@@ -38,7 +38,7 @@ public abstract class XModule {
 
     }
 
-    public void loop(){
+    public void loop(double deltaTime){
 
         control_loop();
 

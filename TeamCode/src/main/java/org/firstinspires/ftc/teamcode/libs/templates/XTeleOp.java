@@ -15,6 +15,9 @@ public abstract class XTeleOp extends OpMode implements XOpMode {
 
     private Scheduler scheduler;
 
+    private double lastTime;
+
+
     public void init_modules(){
 
 
@@ -28,15 +31,15 @@ public abstract class XTeleOp extends OpMode implements XOpMode {
 
         init_modules();
 
-        for(XModule system : manager.getActiveSystems()){
+        for(XModule module : manager.getActiveModules()){
 
-            system.init(scheduler, driverStation);
+            module.init(scheduler, driverStation);
 
         }
 
-        for(XModule system : manager.getInactiveSystems()){
+        for(XModule module : manager.getInactiveModules()){
 
-            system.init(scheduler, driverStation);
+            module.init(scheduler, driverStation);
 
         }
 
@@ -61,9 +64,9 @@ public abstract class XTeleOp extends OpMode implements XOpMode {
 
         }
 
-        for (XModule system : manager.getActiveSystems()) {
+        for (XModule module : manager.getActiveModules()) {
 
-            system.init_loop();
+            module.init_loop();
 
         }
 
@@ -72,11 +75,13 @@ public abstract class XTeleOp extends OpMode implements XOpMode {
     @Override
     public void start() {
 
-        for(XModule system : manager.getActiveSystems()){
+        for(XModule module: manager.getActiveModules()){
 
-            system.start();
+            module.start();
 
         }
+
+        lastTime = System.currentTimeMillis() / 1000.0;
 
     }
 
@@ -85,24 +90,29 @@ public abstract class XTeleOp extends OpMode implements XOpMode {
 
         scheduler.loop();
 
+        double currentTime = System.currentTimeMillis() / 1000.0;
+        double deltaTime = currentTime - lastTime;
+
         if (driverStation != null) driverStation.update();
 
-        for(XModule system : manager.getActiveSystems()){
+        for(XModule module : manager.getActiveModules()){
 
-            system.loop();
+            module.loop(deltaTime);
 
         }
 
         displayTelemetry();
+
+        lastTime = currentTime;
 
     }
 
     @Override
     public void stop() {
 
-        for(XModule system : manager.getActiveSystems()){
+        for(XModule module : manager.getActiveModules()){
 
-            system.stop();
+            module.stop();
 
         }
 

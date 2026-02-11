@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.source.opmodes.auton;
 
+import com.bylazar.telemetry.PanelsTelemetry;
+import com.bylazar.telemetry.TelemetryManager;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
@@ -7,6 +9,7 @@ import com.pedropathing.paths.PathChain;
 import org.firstinspires.ftc.teamcode.libs.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.libs.templates.XAuton;
 import org.firstinspires.ftc.teamcode.libs.templates.XModuleManager;
+import org.firstinspires.ftc.teamcode.libs.tuning.PedroConstants;
 import org.firstinspires.ftc.teamcode.source.systems.CameraSystem;
 import org.firstinspires.ftc.teamcode.source.systems.Flywheel;
 import org.firstinspires.ftc.teamcode.source.systems.IntakeSystem;
@@ -30,7 +33,9 @@ public class AutonBlueBasket extends XAuton {
 
     }
 
-    private StateMachine currentState;
+    private TelemetryManager panelsTelemetry;
+
+    private StateMachine currentState = StateMachine.DRIVE_START;
     private PathChain driveStart;
     private PathChain collectBalls1;
     private PathChain reset1;
@@ -40,18 +45,16 @@ public class AutonBlueBasket extends XAuton {
     private PathChain collectBalls3;
     private PathChain reset3;
 
-
-
+    private final Pose startPosition = new Pose(20.551020408163268, 122.24489795918367, Math.toRadians(144.0));
 
     MecanumDrive drive = new MecanumDrive(this);
     CameraSystem cameraSystem = new CameraSystem(this, drive);
-    Flywheel flywheel = new Flywheel(this, cameraSystem);
+    //Flywheel flywheel = new Flywheel(this, cameraSystem, pinpoint);
     Spindexer spindexer = new Spindexer(this);
     IntakeSystem intakeSystem = new IntakeSystem(this);
 
     public void buildPaths(){
 
-        Pose startPosition = new Pose(20.551020408163268, 122.24489795918367, Math.toRadians(144.0));
         Pose shootPosition = new Pose(60.04081632653061, 83.7755102040816, Math.toRadians(136.0));
         Pose row1 = new Pose (39.67346938775509, 83.7755102040816, Math.toRadians(180.0));
         Pose row2 = new Pose(39.67346938775509, 59.755102040816325, Math.toRadians(180.0));
@@ -115,7 +118,7 @@ public class AutonBlueBasket extends XAuton {
 
         registerModule(drive, XModuleManager.ModuleType.ACTIVE);
         registerModule(cameraSystem, XModuleManager.ModuleType.ACTIVE);
-        registerModule(flywheel, XModuleManager.ModuleType.ACTIVE);
+        //registerModule(flywheel, XModuleManager.ModuleType.ACTIVE);
         registerModule(spindexer, XModuleManager.ModuleType.ACTIVE);
         registerModule(intakeSystem, XModuleManager.ModuleType.ACTIVE);
 
@@ -126,12 +129,20 @@ public class AutonBlueBasket extends XAuton {
 
         super.init();
 
+        panelsTelemetry = PanelsTelemetry.INSTANCE.getTelemetry();
+
+        follower = PedroConstants.createFollower(hardwareMap);
+        follower.setStartingPose(startPosition);
+
         buildPaths();
 
     }
 
     @Override
     public void run(){
+
+        follower.update();
+
         switch(currentState){
 
             case DRIVE_START:

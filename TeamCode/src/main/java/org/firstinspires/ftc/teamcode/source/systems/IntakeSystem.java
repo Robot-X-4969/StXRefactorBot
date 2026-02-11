@@ -30,9 +30,9 @@ public class IntakeSystem extends XModule {
     }
 
     @Override
-    public void loop(){
+    public void loop(double deltaTime) {
 
-        super.loop();
+        super.loop(deltaTime);
 
         crServo1.rotate(1.0);
         crServo2.rotate(-1.0);

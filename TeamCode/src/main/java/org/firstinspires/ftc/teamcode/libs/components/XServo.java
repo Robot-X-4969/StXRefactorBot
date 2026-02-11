@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.libs.components;
 
+import com.qualcomm.robotcore.hardware.PwmControl;
 import com.qualcomm.robotcore.hardware.ServoImplEx;
 
 import org.firstinspires.ftc.teamcode.libs.templates.XOpMode;
@@ -46,6 +47,12 @@ public class XServo {
         servo.setPosition(position);
 
         currentPosition = position;
+
+    }
+
+    public void setPWMRange(double min, double max){
+
+        servo.setPwmRange(new PwmControl.PwmRange(min, max));
 
     }
 

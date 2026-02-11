@@ -15,6 +15,8 @@ public class CameraSystem extends XModule {
 
     private boolean isAligning;
 
+    private double lastAngle;
+
     public CameraSystem(XOpMode op, MecanumDrive drive) {
 
         super(op);
@@ -39,9 +41,16 @@ public class CameraSystem extends XModule {
     }
 
     @Override
-    public void loop(){
+    public void start(){
 
-        super.loop();
+        lastAngle = 0.0;
+
+    }
+
+    @Override
+    public void loop(double deltaTime){
+
+        super.loop(deltaTime);
 
         camera.loop();
 
@@ -49,7 +58,7 @@ public class CameraSystem extends XModule {
 
             double xAngle = camera.getTx(camera.getAprilTagIndex(20));
 
-            autoAlign(xAngle);
+            autoAlign(xAngle, deltaTime);
 
         } else if (isAligning && !camera.seesAprilTag(20)) {
 
@@ -87,19 +96,27 @@ public class CameraSystem extends XModule {
 
     }
 
-    public void autoAlign(double xAngle){
+    public void autoAlign(double xAngle, double deltaTime){
 
-        double kP = 0.03;
+        double kP = 0.01;
+        double kD = 0.002;
 
-        if(xAngle > 1.0){
+        double P = xAngle * kP;
+        double D = ((xAngle - lastAngle)) / deltaTime * kD;
 
-            double power = Math.max(xAngle * kP, 0.1);
+        double power = P + D;
 
-            drive.setAutoR(power);
+        if(Math.abs(xAngle) > 1.0){
 
-        } else if(xAngle < -1.0){
+            if(power > 0){
 
-            double power = Math.min(xAngle * kP, -0.1);
+                power += 0.01;
+
+            } else if (power < 0){
+
+                power -= 0.01;
+
+            }
 
             drive.setAutoR(power);
 

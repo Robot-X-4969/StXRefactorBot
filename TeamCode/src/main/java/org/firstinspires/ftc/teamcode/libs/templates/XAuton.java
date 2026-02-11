@@ -41,13 +41,13 @@ public abstract class XAuton extends LinearOpMode implements XOpMode {
 
         init_modules();
 
-        for(XModule system : manager.getActiveSystems()) {
+        for(XModule system : manager.getActiveModules()) {
 
             system.init(this.scheduler, this.driverStation);
 
         }
 
-        for(XModule system : manager.getActiveSystems()){
+        for(XModule system : manager.getInactiveModules()){
 
             system.init(this.scheduler, this.driverStation);
 
