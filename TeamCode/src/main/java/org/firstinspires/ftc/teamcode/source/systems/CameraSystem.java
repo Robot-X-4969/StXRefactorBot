@@ -15,7 +15,7 @@ public class CameraSystem extends XModule {
 
     private boolean isAligning;
 
-    private double lastAngle;
+    private double lastError;
 
     public CameraSystem(XOpMode op, MecanumDrive drive) {
 
@@ -43,7 +43,7 @@ public class CameraSystem extends XModule {
     @Override
     public void start(){
 
-        lastAngle = 0.0;
+        lastError = 0.0;
 
     }
 
@@ -98,23 +98,25 @@ public class CameraSystem extends XModule {
 
     public void autoAlign(double xAngle, double deltaTime){
 
-        double kP = 0.01;
-        double kD = 0.002;
+        double kP = 0.02;
+        double kD = 0.0005;
 
-        double P = xAngle * kP;
-        double D = ((xAngle - lastAngle)) / deltaTime * kD;
+        double error = xAngle;
+
+        double P = error * kP;
+        double D = ((error - lastError)) / deltaTime * kD;
 
         double power = P + D;
 
-        if(Math.abs(xAngle) > 1.0){
+        if(Math.abs(xAngle) > 3.0){
 
             if(power > 0){
 
-                power += 0.01;
+                power += 0.005;
 
             } else if (power < 0){
 
-                power -= 0.01;
+                power -= 0.005;
 
             }
 
@@ -129,6 +131,8 @@ public class CameraSystem extends XModule {
             isAligning = false;
 
         }
+
+        lastError = error;
 
     }
 
