@@ -104,7 +104,7 @@ public class XPinpoint {
 
     public void setStartPose(double x, double y, double heading){
 
-        device.setPosition(new Pose2D(DistanceUnit.INCH, x, y, AngleUnit.DEGREES, heading));
+        device.setPosition(new Pose2D(DistanceUnit.INCH, x, y, AngleUnit.RADIANS, heading));
 
     }
 

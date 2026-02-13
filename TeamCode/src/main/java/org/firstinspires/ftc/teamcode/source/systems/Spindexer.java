@@ -20,6 +20,8 @@ public class Spindexer extends XModule {
     
     private boolean isFiring;
 
+    private boolean burstFire;
+
 
     public Spindexer(XOpMode op) {
 
@@ -55,19 +57,33 @@ public class Spindexer extends XModule {
     public void control_loop() {
 
 
-        if (driverStation.getGamepad1().getLeft_bumper().wasPressed() && !motor.checkBusy()) {
+        if (driverStation.getGamepad1().getLeft_bumper().wasPressed() && !motor.checkBusy() && !isFiring) {
 
-            motor.setFixedRotation(0.6 , motor.getPosition() + -INCREMENT );
+            incrementSpindexer(false);
 
-        } else if (driverStation.getGamepad1().getRight_bumper().wasPressed() && !motor.checkBusy()) {
+        } else if (driverStation.getGamepad1().getRight_bumper().wasPressed() && !motor.checkBusy() && !isFiring) {
 
-            motor.setFixedRotation(0.6 , motor.getPosition() + INCREMENT );
+             incrementSpindexer(true);
 
         }
 
-        if (driverStation.getGamepad1().getB().wasPressed() && !isFiring) {
+        if(driverStation.getGamepad1().getB().wasPressed()){
 
-            manualFire();
+            burstFire = !burstFire;
+
+        }
+
+        if (driverStation.getGamepad1().getRightTriggerPressure() >= 0.5 && !isFiring) {
+
+            if(burstFire){
+
+                burstFire();
+
+            } else {
+
+                manualFire();
+
+            }
 
         }
 
@@ -81,21 +97,13 @@ public class Spindexer extends XModule {
 
         scheduler.setEvent(1000L, "reset1" , this::resetGate);
 
-        scheduler.setEvent(1500L, "increment1" , () -> {
-
-            incrementSpindexer(true);
-
-        });
+        scheduler.setEvent(1500L, "increment1" , () -> incrementSpindexer(true));
 
         scheduler.setEvent(2000L, "fire2" , this::fire);
 
         scheduler.setEvent(3000L, "reset2" , this::resetGate);
 
-        scheduler.setEvent(3500L, "increment2" , () -> {
-
-            incrementSpindexer(true);
-
-        });
+        scheduler.setEvent(3500L, "increment2" , () -> incrementSpindexer(true));
 
         scheduler.setEvent(4000L, "fire3" , this::fire);
 
@@ -113,7 +121,7 @@ public class Spindexer extends XModule {
         fire();
         isFiring = true;
 
-        scheduler.setEvent(1000L, "resetGate", () -> {;
+        scheduler.setEvent(1000L, "resetGate", () -> {
 
             resetGate();
 
@@ -142,6 +150,12 @@ public class Spindexer extends XModule {
         int direction = forward ? INCREMENT : -INCREMENT;
 
         motor.setFixedRotation(0.6 , motor.getPosition() + direction);
+
+    }
+
+    public boolean getIsFiring(){
+
+        return isFiring;
 
     }
 

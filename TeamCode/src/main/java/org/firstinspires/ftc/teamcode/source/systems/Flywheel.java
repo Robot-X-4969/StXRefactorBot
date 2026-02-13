@@ -194,10 +194,10 @@ public class Flywheel extends XModule {
             double denominator = 2.0 * (distance * Math.tan(Math.toRadians(theta)) - h) * Math.pow(Math.cos(Math.toRadians(theta)), 2);
             double velocity = Math.sqrt(numerator / denominator);
 
-            final double adjustedVelocity = velocity * velocityScalar;
+            final double adjustedVelocity = velocity * 2.0 * velocityScalar;
 
             this.RPM = (adjustedVelocity * 60.0) / (2 * pi * wheelRadius);
-            this.RPM = 0;
+
 
 
         }

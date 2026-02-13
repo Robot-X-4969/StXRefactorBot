@@ -8,6 +8,11 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.libs.components.XDriverStation;
 import org.firstinspires.ftc.teamcode.libs.util.Scheduler;
 
+/**
+ * Base class for autonomous op modes. Provides core functionality such as module management and driver station access.
+ *
+ * @author Gavin Farrell
+ */
 public abstract class XAuton extends LinearOpMode implements XOpMode {
 
     private final XModuleManager manager = new XModuleManager(this);
@@ -69,6 +74,7 @@ public abstract class XAuton extends LinearOpMode implements XOpMode {
         manager.register_module(module, type);
 
     }
+
 
     @Override
     public HardwareMap getHardwareMap() {

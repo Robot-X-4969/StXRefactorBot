@@ -8,19 +8,20 @@ import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.libs.components.XPinpoint;
 import org.firstinspires.ftc.teamcode.libs.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.libs.templates.XAuton;
 import org.firstinspires.ftc.teamcode.libs.templates.XModuleManager;
 import org.firstinspires.ftc.teamcode.libs.tuning.PedroConstants;
+import org.firstinspires.ftc.teamcode.libs.util.PoseStorage;
 import org.firstinspires.ftc.teamcode.source.systems.CameraSystem;
 import org.firstinspires.ftc.teamcode.source.systems.Flywheel;
 import org.firstinspires.ftc.teamcode.source.systems.IntakeSystem;
 import org.firstinspires.ftc.teamcode.source.systems.Spindexer;
 
-@Autonomous(name = "autontest", group = "auton")
-public class AutonBlueBasket extends XAuton {
-
-    enum StateMachine {
+@Autonomous(name = "BLUE_FAR", group = "auton")
+public class AutonBlueFar extends XAuton {
+    private enum StateMachine {
 
         DRIVE_START,
         SHOOT_1,
@@ -30,14 +31,9 @@ public class AutonBlueBasket extends XAuton {
         COLLECT_BALLS_2,
         RESET_2,
         SHOOT_3,
-        COLLECT_BALLS_3,
-        RESET_3,
-        SHOOT_4
-
+        STOP
     }
-
     private TelemetryManager panelsTelemetry;
-
     private StateMachine currentState = StateMachine.DRIVE_START;
     private PathChain driveStart;
     private PathChain collectBalls1;
@@ -45,73 +41,44 @@ public class AutonBlueBasket extends XAuton {
     private PathChain collectBalls2;
     private PathChain reset2;
 
-    private PathChain collectBalls3;
-    private PathChain reset3;
-
     private final Pose startPosition = new Pose(20.551020408163268, 122.24489795918367, Math.toRadians(144.0));
 
+    XPinpoint pinpoint = new XPinpoint(this, 1.125, 4.625);
     MecanumDrive drive = new MecanumDrive(this);
     CameraSystem cameraSystem = new CameraSystem(this, drive);
-    //Flywheel flywheel = new Flywheel(this, cameraSystem, pinpoint);
+    Flywheel flywheel = new Flywheel(this, cameraSystem, pinpoint);
     Spindexer spindexer = new Spindexer(this);
     IntakeSystem intakeSystem = new IntakeSystem(this);
 
     public void buildPaths(){
 
-        Pose shootPosition = new Pose(60.04081632653061, 83.7755102040816, Math.toRadians(136.0));
-        Pose row1 = new Pose (39.67346938775509, 83.7755102040816, Math.toRadians(180.0));
-        Pose row2 = new Pose(39.67346938775509, 59.755102040816325, Math.toRadians(180.0));
-        Pose row3 = new Pose(39.67346938775509, 35.61224489795918, Math.toRadians(180.0));
-        Pose collect1 = new Pose(15.73469387755102, 83.7755102040816, Math.toRadians(180.0));
-        Pose collect2 = new Pose(15.73469387755102, 59.755102040816325, Math.toRadians(180.0));
-        Pose collect3 = new Pose(15.73469387755102, 35.61224489795918, Math.toRadians(180.0));
-
-        driveStart = follower
-                .pathBuilder()
-                .addPath(new BezierLine(startPosition, shootPosition))
-                .setLinearHeadingInterpolation(startPosition.getHeading(), shootPosition.getHeading())
+        driveStart = follower.pathBuilder()
+                .addPath(new BezierLine(new Pose(20.480, 122.432), new Pose(59.456, 83.808)))
+                .setLinearHeadingInterpolation(Math.toRadians(144), Math.toRadians(136))
                 .build();
 
-        collectBalls1 = follower
-                .pathBuilder()
-                .addPath(new BezierLine(shootPosition, row1))
-                .setLinearHeadingInterpolation(shootPosition.getHeading(), row1.getHeading())
-                .addPath(new BezierLine(row1, collect1))
-                .setLinearHeadingInterpolation(row1.getHeading(), collect1.getHeading())
+        collectBalls1 = follower.pathBuilder()
+                .addPath(new BezierLine(new Pose(59.456, 83.808), new Pose(41.392, 83.808)))
+                .setTangentHeadingInterpolation()
+                .addPath(new BezierLine(new Pose(41.392, 83.808), new Pose(19.000, 83.808)))
+                .setTangentHeadingInterpolation()
                 .build();
 
-        reset1 = follower
-                .pathBuilder()
-                .addPath(new BezierLine(collect1, shootPosition))
-                .setLinearHeadingInterpolation(collect1.getHeading(), shootPosition.getHeading())
+        reset1 = follower.pathBuilder()
+                .addPath(new BezierLine(new Pose(19.000, 83.808), new Pose(59.456, 83.808)))
+                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(136))
                 .build();
 
-        collectBalls2 = follower
-                .pathBuilder()
-                .addPath(new BezierLine(shootPosition, row2))
-                .setLinearHeadingInterpolation(shootPosition.getHeading(), row2.getHeading())
-                .addPath(new BezierLine(row2, collect2))
-                .setLinearHeadingInterpolation(row2.getHeading(), collect2.getHeading())
+        collectBalls2 = follower.pathBuilder()
+                .addPath(new BezierLine(new Pose(59.456, 83.808), new Pose(41.392, 59.672)))
+                .setLinearHeadingInterpolation(Math.toRadians(136), Math.toRadians(180))
+                .addPath(new BezierLine(new Pose(41.392, 59.672), new Pose(19.000, 59.672)))
+                .setTangentHeadingInterpolation()
                 .build();
 
-        reset2 = follower
-                .pathBuilder()
-                .addPath(new BezierLine(collect2, shootPosition))
-                .setLinearHeadingInterpolation(collect1.getHeading(), shootPosition.getHeading())
-                .build();
-
-        collectBalls3 = follower
-                .pathBuilder()
-                .addPath(new BezierLine(shootPosition, row3))
-                .setLinearHeadingInterpolation(shootPosition.getHeading(), row3.getHeading())
-                .addPath(new BezierLine(row3, collect3))
-                .setLinearHeadingInterpolation(row3.getHeading(), collect3.getHeading())
-                .build();
-
-        reset3 = follower
-                .pathBuilder()
-                .addPath(new BezierLine(collect3, shootPosition))
-                .setLinearHeadingInterpolation(collect1.getHeading(), shootPosition.getHeading())
+        reset2 = follower.pathBuilder()
+                .addPath(new BezierLine(new Pose(19.000, 59.672), new Pose(59.456, 83.808)))
+                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(136))
                 .build();
 
     }
@@ -121,7 +88,7 @@ public class AutonBlueBasket extends XAuton {
 
         registerModule(drive, XModuleManager.ModuleType.ACTIVE);
         registerModule(cameraSystem, XModuleManager.ModuleType.ACTIVE);
-        //registerModule(flywheel, XModuleManager.ModuleType.ACTIVE);
+        registerModule(flywheel, XModuleManager.ModuleType.ACTIVE);
         registerModule(spindexer, XModuleManager.ModuleType.ACTIVE);
         registerModule(intakeSystem, XModuleManager.ModuleType.ACTIVE);
 
@@ -131,6 +98,8 @@ public class AutonBlueBasket extends XAuton {
     public void initialize(){
 
         super.initialize();
+
+        pinpoint.setStartPose(20.480, 122.432, Math.toRadians(144.0));
 
         panelsTelemetry = PanelsTelemetry.INSTANCE.getTelemetry();
 
@@ -161,6 +130,9 @@ public class AutonBlueBasket extends XAuton {
                 if(!follower.isBusy()){
 
                     telemetry.addLine("shot once");
+
+                    spindexer.burstFire();
+
                     currentState = StateMachine.COLLECT_BALLS_1;
 
                 }
@@ -169,7 +141,7 @@ public class AutonBlueBasket extends XAuton {
 
             case COLLECT_BALLS_1:
 
-                if(!follower.isBusy()){
+                if(!follower.isBusy() && !spindexer.getIsFiring()){
 
                     telemetry.addLine("collecting");
                     follower.followPath(collectBalls1, true);
@@ -195,6 +167,7 @@ public class AutonBlueBasket extends XAuton {
 
                 if(!follower.isBusy()){
 
+                    spindexer.burstFire();
                     telemetry.addLine("shot twice");
                     currentState = StateMachine.COLLECT_BALLS_2;
 
@@ -204,7 +177,7 @@ public class AutonBlueBasket extends XAuton {
 
             case COLLECT_BALLS_2:
 
-                if(!follower.isBusy()){
+                if(!follower.isBusy() && !spindexer.getIsFiring()){
 
                     telemetry.addLine("collecting");
                     follower.followPath(collectBalls2, true);
@@ -231,41 +204,22 @@ public class AutonBlueBasket extends XAuton {
                 if(!follower.isBusy()){
 
                     telemetry.addLine("shot thrice");
-                    currentState = StateMachine.COLLECT_BALLS_3;
+                    spindexer.burstFire();
+
+                    PoseStorage.setCurrentPose(pinpoint.getPose());
+
+                    currentState = StateMachine.STOP;
 
                 }
 
                 break;
 
-            case COLLECT_BALLS_3:
 
-                if(!follower.isBusy()){
+            case STOP:
 
-                    telemetry.addLine("collecting");
-                    follower.followPath(collectBalls3, true);
-                    currentState = StateMachine.RESET_3;
+                if(!follower.isBusy() && !spindexer.getIsFiring()){
 
-                }
-
-                break;
-
-            case RESET_3:
-
-                if(!follower.isBusy()){
-
-                    telemetry.addLine("resetting");
-                    follower.followPath(reset3, true);
-                    currentState = StateMachine.SHOOT_4;
-
-                }
-
-                break;
-
-            case SHOOT_4:
-
-                if(!follower.isBusy()){
-
-                    telemetry.addLine("shot final");
+                    telemetry.addLine("stopped");
 
                 }
 
@@ -274,6 +228,5 @@ public class AutonBlueBasket extends XAuton {
         }
 
     }
-
 
 }

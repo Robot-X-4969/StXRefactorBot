@@ -46,19 +46,7 @@ public class Gate extends XModule {
 
        if(op.getXDriverStation().getGamepad1().getX().wasPressed()){
 
-           gateOpen = !gateOpen;
-
-           if(gateOpen){
-
-               servo1.setPosition(90 * (1.0 / 300.0));
-               servo2.setPosition(90 * (1.0 / 300.0));
-
-           } else {
-
-               servo1.setPosition(0.0);
-               servo2.setPosition(0.0);
-
-           }
+          toggleGate();
 
        }
 
@@ -69,6 +57,24 @@ public class Gate extends XModule {
 
         servo1.setPosition(0.0);
         servo1.setPosition(0.0);
+
+    }
+
+    public void toggleGate(){
+
+        gateOpen = !gateOpen;
+
+        if(gateOpen){
+
+            servo1.setPosition(90 * (1.0 / 300.0));
+            servo2.setPosition(90 * (1.0 / 300.0));
+
+        } else {
+
+            servo1.setPosition(0.0);
+            servo2.setPosition(0.0);
+
+        }
 
     }
 

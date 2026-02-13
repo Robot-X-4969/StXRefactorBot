@@ -1,13 +1,13 @@
 package org.firstinspires.ftc.teamcode.source.opmodes.teleops;
 
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.pedropathing.geometry.Pose;import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.libs.components.XPinpoint;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;import org.firstinspires.ftc.teamcode.libs.components.XPinpoint;
 import org.firstinspires.ftc.teamcode.libs.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.libs.templates.XTeleOp;
 
 import org.firstinspires.ftc.teamcode.libs.templates.XModuleManager;
-import org.firstinspires.ftc.teamcode.source.systems.CameraSystem;
+import org.firstinspires.ftc.teamcode.libs.util.PoseStorage;import org.firstinspires.ftc.teamcode.source.systems.CameraSystem;
 import org.firstinspires.ftc.teamcode.source.systems.Flywheel;
 import org.firstinspires.ftc.teamcode.source.systems.Gate;
 import org.firstinspires.ftc.teamcode.source.systems.IntakeSystem;
@@ -53,7 +53,8 @@ public class Teleop2026 extends XTeleOp {
     @Override
     public void start(){
 
-        pinpoint.setStartPose(125.0, -20.0, 51.0);
+        pinpoint.setStartPose(PoseStorage.getCurrentPose().getX(DistanceUnit.INCH), PoseStorage.getCurrentPose().getY(DistanceUnit.INCH),
+                PoseStorage.getCurrentPose().getHeading(AngleUnit.RADIANS));
         super.start();
 
     }
