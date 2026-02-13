@@ -129,7 +129,7 @@ public class PedroTuning extends SelectableOpMode {
 class LocalizationTest extends OpMode {
     @Override
     public void init() {
-        follower.setStartingPose(new Pose(72,72));
+        follower.setStartingPose(new Pose(72,72, Math.toRadians(90)));
     }
 
     /** This initializes the PoseUpdater, the mecanum drive motors, and the Panels telemetry. */
@@ -159,7 +159,7 @@ class LocalizationTest extends OpMode {
 
         telemetryM.debug("x:" + follower.getPose().getX());
         telemetryM.debug("y:" + follower.getPose().getY());
-        telemetryM.debug("heading:" + follower.getPose().getHeading());
+        telemetryM.debug("heading:" + Math.toDegrees(follower.getPose().getHeading()));
         telemetryM.debug("total heading:" + follower.getTotalHeading());
         telemetryM.update(telemetry);
 

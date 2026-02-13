@@ -5,6 +5,8 @@ import com.bylazar.telemetry.TelemetryManager;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.libs.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.libs.templates.XAuton;
@@ -15,6 +17,7 @@ import org.firstinspires.ftc.teamcode.source.systems.Flywheel;
 import org.firstinspires.ftc.teamcode.source.systems.IntakeSystem;
 import org.firstinspires.ftc.teamcode.source.systems.Spindexer;
 
+@Autonomous(name = "autontest", group = "auton")
 public class AutonBlueBasket extends XAuton {
 
     enum StateMachine {
@@ -127,7 +130,7 @@ public class AutonBlueBasket extends XAuton {
     @Override
     public void initialize(){
 
-        super.init();
+        super.initialize();
 
         panelsTelemetry = PanelsTelemetry.INSTANCE.getTelemetry();
 

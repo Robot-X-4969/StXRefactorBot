@@ -12,9 +12,9 @@ public abstract class XAuton extends LinearOpMode implements XOpMode {
 
     private final XModuleManager manager = new XModuleManager(this);
 
-    protected final Scheduler scheduler = new Scheduler();
+    protected Scheduler scheduler;
 
-    protected final XDriverStation driverStation = new XDriverStation(gamepad1, gamepad2);
+    protected XDriverStation driverStation;
 
     protected Follower follower;
 
@@ -38,6 +38,9 @@ public abstract class XAuton extends LinearOpMode implements XOpMode {
     }
 
     public void initialize(){
+
+        driverStation = new XDriverStation(gamepad1, gamepad2);
+        scheduler = new Scheduler();
 
         init_modules();
 

@@ -9,6 +9,7 @@ import org.firstinspires.ftc.teamcode.libs.templates.XTeleOp;
 import org.firstinspires.ftc.teamcode.libs.templates.XModuleManager;
 import org.firstinspires.ftc.teamcode.source.systems.CameraSystem;
 import org.firstinspires.ftc.teamcode.source.systems.Flywheel;
+import org.firstinspires.ftc.teamcode.source.systems.Gate;
 import org.firstinspires.ftc.teamcode.source.systems.IntakeSystem;
 import org.firstinspires.ftc.teamcode.source.systems.Spindexer;
 
@@ -21,6 +22,7 @@ public class Teleop2026 extends XTeleOp {
     Flywheel flywheel = new Flywheel(this, cameraSystem, pinpoint);
     Spindexer spindexer = new Spindexer(this);
     IntakeSystem intakeSystem = new IntakeSystem(this);
+    Gate gate = new Gate(this);
 
     @Override
     public void init_modules() {
@@ -33,6 +35,7 @@ public class Teleop2026 extends XTeleOp {
         registerModule(flywheel, XModuleManager.ModuleType.ACTIVE);
         registerModule(spindexer, XModuleManager.ModuleType.ACTIVE);
         registerModule(intakeSystem, XModuleManager.ModuleType.ACTIVE);
+        registerModule(gate, XModuleManager.ModuleType.ACTIVE);
 
     }
 

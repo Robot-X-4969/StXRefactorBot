@@ -197,6 +197,7 @@ public class Flywheel extends XModule {
             final double adjustedVelocity = velocity * velocityScalar;
 
             this.RPM = (adjustedVelocity * 60.0) / (2 * pi * wheelRadius);
+            this.RPM = 0;
 
 
         }

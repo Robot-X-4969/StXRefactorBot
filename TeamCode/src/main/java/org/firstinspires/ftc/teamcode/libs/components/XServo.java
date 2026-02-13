@@ -50,6 +50,12 @@ public class XServo {
 
     }
 
+    public void setReversed(boolean reversed){
+
+        servo.setDirection(reversed ? ServoImplEx.Direction.REVERSE : ServoImplEx.Direction.FORWARD);
+
+    }
+
     public void setPWMRange(double min, double max){
 
         servo.setPwmRange(new PwmControl.PwmRange(min, max));
